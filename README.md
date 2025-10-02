@@ -26,7 +26,6 @@ go run main.go
 ### 2. Проверка работы
 Откройте в браузере:
 -	http://localhost:8080 - веб-интерфейс
--	http://localhost:8080/api/health - health check
 -	http://localhost:8080/metrics - Prometheus метрики
 
  ## API Endpoints
