@@ -4,11 +4,13 @@ import (
 	"context"
 	"embed"
 	"fmt"
+	"io"
 	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
 	"strconv"
+	"strings"
 	"sync"
 	"syscall"
 	"time"
@@ -26,11 +28,18 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
+// Константы для путей файлов
+const (
+	LogFile      = "app.log"
+	MetricsFile  = "metrics.log"
+	LogDir       = "logs"
+	MetricsDir   = "metrics"
+)
+
 //go:embed static/*
 var staticFiles embed.FS
 
-// МОДЕЛИ ДАННЫХ
-
+// Структуры данных
 type Department struct {
 	ID          string    `json:"id"`
 	Name        string    `json:"name"`
@@ -54,12 +63,12 @@ type Employee struct {
 }
 
 type EmployeeSearchRequest struct {
-    FullName  string `json:"full_name"`
-    Position  string `json:"position"`
-    Gender    string `json:"gender"`
-    Education string `json:"education"`
-    AgeFrom   *int   `json:"age_from,omitempty"`
-    AgeTo     *int   `json:"age_to,omitempty"`
+	FullName  string `json:"full_name"`
+	Position  string `json:"position"`
+	Gender    string `json:"gender"`
+	Education string `json:"education"`
+	AgeFrom   *int   `json:"age_from,omitempty"`
+	AgeTo     *int   `json:"age_to,omitempty"`
 }
 
 type StatusUpdateRequest struct {
@@ -73,9 +82,7 @@ type APIResponse struct {
 	Message string      `json:"message,omitempty"`
 }
 
-// IN-MEMORY РЕПОЗИТОРИЙ
-
-
+// Интерфейс репозитория
 type Repository interface {
 	GetDepartments(ctx context.Context) ([]Department, error)
 	GetEmployeesByDepartment(ctx context.Context, departmentID string) ([]Employee, error)
@@ -87,6 +94,7 @@ type Repository interface {
 	GetEmployeeStats(ctx context.Context) (map[string]interface{}, error)
 }
 
+// In-memory репозиторий
 type MemoryRepository struct {
 	mu          sync.RWMutex
 	departments map[string]Department
@@ -104,16 +112,12 @@ func NewMemoryRepository() *MemoryRepository {
 			"Системный администратор", "Руководитель отдела",
 		},
 	}
-
-	// Инициализация тестовых данных
 	repo.initTestData()
 	return repo
 }
 
 func (r *MemoryRepository) initTestData() {
 	now := time.Now()
-	
-	// Департаменты
 	depts := []Department{
 		{ID: "dept1", Name: "IT-департамент", Description: "Разработка ПО", CreatedAt: now},
 		{ID: "dept2", Name: "Отдел продаж", Description: "Продажи и маркетинг", CreatedAt: now},
@@ -126,7 +130,6 @@ func (r *MemoryRepository) initTestData() {
 		r.departments[dept.ID] = dept
 	}
 
-	// Сотрудники
 	employees := []Employee{
 		{
 			ID: "emp1", FullName: "Иванов Иван Иванович", Gender: "male", Age: 35,
@@ -180,47 +183,44 @@ func (r *MemoryRepository) GetEmployeesByDepartment(ctx context.Context, departm
 }
 
 func (r *MemoryRepository) SearchEmployees(ctx context.Context, req EmployeeSearchRequest) ([]Employee, error) {
-    r.mu.RLock()
-    defer r.mu.RUnlock()
+	r.mu.RLock()
+	defer r.mu.RUnlock()
 
-    var employees []Employee
-    for _, emp := range r.employees {
-        if req.FullName != "" && !contains(emp.FullName, req.FullName) {
-            continue
-        }
-        if req.Position != "" && emp.Position != req.Position {
-            continue
-        }
-        if req.Gender != "" && emp.Gender != req.Gender {
-            continue
-        }
-        if req.Education != "" && emp.Education != req.Education {
-            continue
-        }
-        if req.AgeFrom != nil && emp.Age < *req.AgeFrom {
-            continue
-        }
-        if req.AgeTo != nil && emp.Age > *req.AgeTo {
-            continue
-        }
-
-        employees = append(employees, emp)
-    }
-    return employees, nil
+	var employees []Employee
+	for _, emp := range r.employees {
+		if req.FullName != "" && !contains(emp.FullName, req.FullName) {
+			continue
+		}
+		if req.Position != "" && emp.Position != req.Position {
+			continue
+		}
+		if req.Gender != "" && emp.Gender != req.Gender {
+			continue
+		}
+		if req.Education != "" && emp.Education != req.Education {
+			continue
+		}
+		if req.AgeFrom != nil && emp.Age < *req.AgeFrom {
+			continue
+		}
+		if req.AgeTo != nil && emp.Age > *req.AgeTo {
+			continue
+		}
+		employees = append(employees, emp)
+	}
+	return employees, nil
 }
 
 func (r *MemoryRepository) CreateEmployee(ctx context.Context, emp Employee) (*Employee, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	// Проверка уникальности паспорта
 	for _, existing := range r.employees {
 		if existing.Passport == emp.Passport {
 			return nil, fmt.Errorf("сотрудник с таким паспортом уже существует")
 		}
 	}
 
-	// Генерация ID и установка временных меток
 	emp.ID = fmt.Sprintf("emp%d", len(r.employees)+1)
 	now := time.Now()
 	emp.CreatedAt = now
@@ -242,7 +242,6 @@ func (r *MemoryRepository) UpdateEmployee(ctx context.Context, emp Employee) (*E
 		return nil, fmt.Errorf("сотрудник не найден")
 	}
 
-	// Проверка уникальности паспорта (исключая текущего сотрудника)
 	for _, e := range r.employees {
 		if e.ID != emp.ID && e.Passport == emp.Passport {
 			return nil, fmt.Errorf("сотрудник с таким паспортом уже существует")
@@ -251,7 +250,7 @@ func (r *MemoryRepository) UpdateEmployee(ctx context.Context, emp Employee) (*E
 
 	emp.CreatedAt = existing.CreatedAt
 	emp.UpdatedAt = time.Now()
-	emp.Status = existing.Status // Сохраняем статус
+	emp.Status = existing.Status
 
 	r.employees[emp.ID] = emp
 	return &emp, nil
@@ -268,7 +267,6 @@ func (r *MemoryRepository) UpdateEmployeeStatus(ctx context.Context, id string, 
 
 	emp.Status = status
 	emp.UpdatedAt = time.Now()
-
 	if status == "fired" {
 		now := time.Now()
 		emp.FiredAt = &now
@@ -291,8 +289,8 @@ func (r *MemoryRepository) GetEmployeeStats(ctx context.Context) (map[string]int
 	stats := make(map[string]interface{})
 	statusCount := make(map[string]int)
 	deptCount := make(map[string]int)
-
 	total := 0
+
 	for _, emp := range r.employees {
 		total++
 		statusCount[emp.Status]++
@@ -306,17 +304,11 @@ func (r *MemoryRepository) GetEmployeeStats(ctx context.Context) (map[string]int
 	return stats, nil
 }
 
-func containsIgnoreCase(str, substr string) bool {
-	return contains(str, substr) // Простая реализация
-}
-
 func contains(str, substr string) bool {
 	return len(str) >= len(substr) && str[:len(substr)] == substr
 }
 
-// СЕРВИСНЫЙ СЛОЙ
-
-
+// Сервис сотрудников
 type EmployeeService struct {
 	repo Repository
 }
@@ -342,37 +334,29 @@ func (s *EmployeeService) SearchEmployees(ctx context.Context, req EmployeeSearc
 
 func (s *EmployeeService) CreateEmployee(ctx context.Context, emp Employee) (*Employee, error) {
 	slog.DebugContext(ctx, "creating employee", "employee", emp.FullName)
-	
-	// Валидация
 	if err := s.validateEmployee(emp); err != nil {
 		return nil, err
 	}
-
 	return s.repo.CreateEmployee(ctx, emp)
 }
 
 func (s *EmployeeService) UpdateEmployee(ctx context.Context, emp Employee) (*Employee, error) {
 	slog.DebugContext(ctx, "updating employee", "employee_id", emp.ID)
-	
 	if emp.ID == "" {
 		return nil, fmt.Errorf("ID сотрудника обязателен")
 	}
-
 	if err := s.validateEmployee(emp); err != nil {
 		return nil, err
 	}
-
 	return s.repo.UpdateEmployee(ctx, emp)
 }
 
 func (s *EmployeeService) UpdateEmployeeStatus(ctx context.Context, id string, status string) (*Employee, error) {
 	slog.DebugContext(ctx, "updating employee status", "employee_id", id, "status", status)
-	
 	validStatuses := map[string]bool{"active": true, "vacation": true, "fired": true}
 	if !validStatuses[status] {
 		return nil, fmt.Errorf("неверный статус: %s", status)
 	}
-
 	return s.repo.UpdateEmployeeStatus(ctx, id, status)
 }
 
@@ -421,8 +405,7 @@ func (s *EmployeeService) validateEmployee(emp Employee) error {
 	return nil
 }
 
-// METRICS (PROMETHEUS)
-
+// Prometheus метрики
 var (
 	HttpRequestsTotal = promauto.NewCounterVec(prometheus.CounterOpts{
 		Name: "http_requests_total",
@@ -447,7 +430,7 @@ var (
 )
 
 func InitMetrics() {
-	// Метрики автоматически регистрируются при импорте
+	// Инициализация метрик
 }
 
 func UpdateEmployeeMetrics(stats map[string]interface{}) {
@@ -462,8 +445,7 @@ func UpdateEmployeeMetrics(stats map[string]interface{}) {
 	}
 }
 
-// TRACING (OPENTELEMETRY)
-
+// OpenTelemetry трассировка
 func InitTracer(jaegerURL, serviceName string) (*sdktrace.TracerProvider, error) {
 	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(jaegerURL)))
 	if err != nil {
@@ -482,8 +464,7 @@ func InitTracer(jaegerURL, serviceName string) (*sdktrace.TracerProvider, error)
 	return tp, nil
 }
 
-// HTTP HANDLERS
-
+// HTTP обработчик
 type Handler struct {
 	service *EmployeeService
 	tracer  trace.Tracer
@@ -498,13 +479,10 @@ func NewHandler(service *EmployeeService) *Handler {
 
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
-
-	// Middleware
 	router.Use(h.loggingMiddleware())
 	router.Use(h.tracingMiddleware())
 	router.Use(gin.Recovery())
 
-	// API routes
 	api := router.Group("/api")
 	{
 		api.GET("/departments", h.getDepartments)
@@ -518,33 +496,27 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		api.GET("/health", h.healthCheck)
 	}
 
-	// Prometheus metrics
 	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
+	router.StaticFS("/static", http.FS(staticFiles))
 
-// Статические файлы (фронтенд)
-router.StaticFS("/static", http.FS(staticFiles))
-
-// Главная страница - отдаем index.html
-router.GET("/", func(c *gin.Context) {
-    data, err := staticFiles.ReadFile("static/index.html")
-    if err != nil {
-        c.String(http.StatusInternalServerError, "Ошибка загрузки страницы")
-        return
-    }
-    c.Data(http.StatusOK, "text/html; charset=utf-8", data)
-})
+	router.GET("/", func(c *gin.Context) {
+		data, err := staticFiles.ReadFile("static/index.html")
+		if err != nil {
+			c.String(http.StatusInternalServerError, "Ошибка загрузки страницы")
+			return
+		}
+		c.Data(http.StatusOK, "text/html; charset=utf-8", data)
+	})
 
 	return router
 }
 
-// Middleware
 func (h *Handler) loggingMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		start := time.Now()
 		c.Next()
 		duration := time.Since(start)
 
-		// Логирование в JSON формате
 		slog.Info("HTTP request",
 			"method", c.Request.Method,
 			"path", c.Request.URL.Path,
@@ -553,7 +525,6 @@ func (h *Handler) loggingMiddleware() gin.HandlerFunc {
 			"client_ip", c.ClientIP(),
 		)
 
-		// Метрики
 		HttpRequestsTotal.WithLabelValues(
 			c.Request.Method,
 			c.Request.URL.Path,
@@ -587,7 +558,6 @@ func (h *Handler) tracingMiddleware() gin.HandlerFunc {
 	}
 }
 
-// Handlers
 func (h *Handler) getDepartments(c *gin.Context) {
 	ctx := c.Request.Context()
 	departments, err := h.service.GetDepartments(ctx)
@@ -601,7 +571,6 @@ func (h *Handler) getDepartments(c *gin.Context) {
 func (h *Handler) getEmployeesByDepartment(c *gin.Context) {
 	ctx := c.Request.Context()
 	departmentID := c.Param("departmentId")
-	
 	employees, err := h.service.GetEmployeesByDepartment(ctx, departmentID)
 	if err != nil {
 		h.sendError(c, http.StatusInternalServerError, "Ошибка получения сотрудников: "+err.Error())
@@ -643,14 +612,12 @@ func (h *Handler) createEmployee(c *gin.Context) {
 		h.sendError(c, status, "Ошибка создания сотрудника: "+err.Error())
 		return
 	}
-
 	h.sendSuccessWithMessage(c, createdEmp, "Сотрудник успешно создан")
 }
 
 func (h *Handler) updateEmployee(c *gin.Context) {
 	ctx := c.Request.Context()
 	id := c.Param("id")
-	
 	var emp Employee
 	if err := c.ShouldBindJSON(&emp); err != nil {
 		h.sendError(c, http.StatusBadRequest, "Неверный формат данных: "+err.Error())
@@ -663,14 +630,12 @@ func (h *Handler) updateEmployee(c *gin.Context) {
 		h.sendError(c, http.StatusInternalServerError, "Ошибка обновления сотрудника: "+err.Error())
 		return
 	}
-
 	h.sendSuccessWithMessage(c, updatedEmp, "Данные сотрудника обновлены")
 }
 
 func (h *Handler) updateEmployeeStatus(c *gin.Context) {
 	ctx := c.Request.Context()
 	id := c.Param("id")
-	
 	var req StatusUpdateRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.sendError(c, http.StatusBadRequest, "Неверный формат данных: "+err.Error())
@@ -713,10 +678,7 @@ func (h *Handler) getMetrics(c *gin.Context) {
 		h.sendError(c, http.StatusInternalServerError, "Ошибка получения метрик: "+err.Error())
 		return
 	}
-
-	// Обновляем Prometheus метрики
 	UpdateEmployeeMetrics(stats)
-
 	h.sendSuccess(c, map[string]interface{}{
 		"timestamp": time.Now(),
 		"stats":     stats,
@@ -732,7 +694,6 @@ func (h *Handler) healthCheck(c *gin.Context) {
 	})
 }
 
-// Вспомогательные методы
 func (h *Handler) sendSuccess(c *gin.Context, data interface{}) {
 	c.JSON(http.StatusOK, APIResponse{
 		Success: true,
@@ -749,39 +710,165 @@ func (h *Handler) sendSuccessWithMessage(c *gin.Context, data interface{}, messa
 }
 
 func (h *Handler) sendError(c *gin.Context, status int, message string) {
-	slog.Error("API error", 
-		"status", status, 
+	slog.Error("API error",
+		"status", status,
 		"message", message,
 		"path", c.Request.URL.Path,
 	)
-
 	c.JSON(status, APIResponse{
 		Success: false,
 		Error:   message,
 	})
 }
 
-// MAIN FUNCTION
+// Функция для настройки логгера
+func setupLogger() (*os.File, error) {
+	// Создаем директорию для логов если не существует
+	if err := os.MkdirAll(LogDir, 0755); err != nil {
+		return nil, fmt.Errorf("не удалось создать директорию логов: %w", err)
+	}
 
-func main() {
-	// Настройка JSON логгера
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+	// Открываем файл для записи логов
+	logFilePath := LogDir + "/" + LogFile
+	file, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		return nil, fmt.Errorf("не удалось открыть файл логов: %w", err)
+	}
+
+	// Создаем multi-писатель: в файл И в консоль
+	multiWriter := io.MultiWriter(os.Stdout, file)
+
+	// Настраиваем логгер
+	logger := slog.New(slog.NewJSONHandler(multiWriter, &slog.HandlerOptions{
 		Level: slog.LevelInfo,
 	}))
 	slog.SetDefault(logger)
 
-// Трассировка отключена (Jaeger не требуется для работы)
-slog.Info("Трассировка отключена - Jaeger не запущен")
+	return file, nil
+}
 
-	// Инициализация метрик
+// Функция для настройки записи метрик в файл
+func setupMetricsWriter() (*os.File, error) {
+	// Создаем директорию для метрик если не существует
+	if err := os.MkdirAll(MetricsDir, 0755); err != nil {
+		return nil, fmt.Errorf("не удалось создать директорию метрик: %w", err)
+	}
+
+	// Открываем файл для записи метрик
+	metricsFilePath := MetricsDir + "/" + MetricsFile
+	file, err := os.OpenFile(metricsFilePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		return nil, fmt.Errorf("не удалось открыть файл метрик: %w", err)
+	}
+
+	return file, nil
+}
+
+// Глобальная переменная для файла метрик
+var metricsFile *os.File
+
+// Функция для записи метрик в файл
+func writeMetricsToFile() {
+	if metricsFile == nil {
+		return
+	}
+
+	// Получаем все метрики из регистратора
+	metrics, err := prometheus.DefaultGatherer.Gather()
+	if err != nil {
+		slog.Error("Ошибка сбора метрик", "error", err)
+		return
+	}
+
+	// Записываем метрики в файл
+	timestamp := time.Now().Format(time.RFC3339)
+	metricsFile.WriteString(fmt.Sprintf("=== METRICS DUMP %s ===\n", timestamp))
+
+	for _, metric := range metrics {
+		metricsFile.WriteString(fmt.Sprintf("Metric: %s\n", metric.GetName()))
+		metricsFile.WriteString(fmt.Sprintf("Help: %s\n", metric.GetHelp()))
+		metricsFile.WriteString(fmt.Sprintf("Type: %v\n", metric.GetType()))
+
+		for _, m := range metric.GetMetric() {
+			var value float64
+
+			// Простая обработка значений
+			if counter := m.GetCounter(); counter != nil {
+				value = counter.GetValue()
+			} else if gauge := m.GetGauge(); gauge != nil {
+				value = gauge.GetValue()
+			} else if histogram := m.GetHistogram(); histogram != nil {
+				value = histogram.GetSampleSum()
+			} else if summary := m.GetSummary(); summary != nil {
+				value = summary.GetSampleSum()
+			} else if untyped := m.GetUntyped(); untyped != nil {
+				value = untyped.GetValue()
+			}
+
+			labels := make([]string, 0, len(m.GetLabel()))
+			for _, label := range m.GetLabel() {
+				labels = append(labels, fmt.Sprintf("%s=%s", label.GetName(), label.GetValue()))
+			}
+
+			labelStr := ""
+			if len(labels) > 0 {
+				labelStr = fmt.Sprintf(" {%s}", strings.Join(labels, ", "))
+			}
+
+			metricsFile.WriteString(fmt.Sprintf("  %s%s: %f\n", metric.GetName(), labelStr, value))
+		}
+		metricsFile.WriteString("\n")
+	}
+	metricsFile.WriteString("=== END METRICS DUMP ===\n\n")
+
+	metricsFile.Sync() // Синхронизируем запись на диск
+}
+
+// Таймер для периодической записи метрик
+func startMetricsWriter() {
+	ticker := time.NewTicker(30 * time.Second) // Записываем каждые 30 секунд
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ticker.C:
+			writeMetricsToFile()
+		}
+	}
+}
+
+// Основная функция
+func main() {
+	// Настраиваем логгер
+	logFile, err := setupLogger()
+	if err != nil {
+		fmt.Printf("Ошибка настройки логгера: %v\n", err)
+		os.Exit(1)
+	}
+	defer logFile.Close()
+
+	slog.Info("Логгер инициализирован", "log_file", LogDir+"/"+LogFile)
+
+	// Настраиваем запись метрик в файл
+	metricsFile, err = setupMetricsWriter()
+	if err != nil {
+		slog.Error("Ошибка настройки записи метрик", "error", err)
+	} else {
+		defer metricsFile.Close()
+		slog.Info("Запись метрик в файл инициализирована", "metrics_file", MetricsDir+"/"+MetricsFile)
+
+		// Запускаем горутину для периодической записи метрик
+		go startMetricsWriter()
+	}
+
+	slog.Info("Трассировка отключена - Jaeger не запущен")
+
 	InitMetrics()
 
-	// Инициализация сервисов
 	repo := NewMemoryRepository()
 	service := NewEmployeeService(repo)
 	handler := NewHandler(service)
 
-	// Создание HTTP сервера
 	server := &http.Server{
 		Addr:         ":8080",
 		Handler:      handler.InitRoutes(),
@@ -790,7 +877,6 @@ slog.Info("Трассировка отключена - Jaeger не запуще�
 		IdleTimeout:  60 * time.Second,
 	}
 
-	// Запуск сервера
 	go func() {
 		slog.Info("Запуск сервера", "port", "8080")
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
@@ -799,14 +885,16 @@ slog.Info("Трассировка отключена - Jaeger не запуще�
 		}
 	}()
 
-	// Ожидание сигнала для graceful shutdown
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
 	<-quit
 
 	slog.Info("Завершение работы сервера...")
 
-	// Graceful shutdown
+	// Записываем финальные метрики перед завершением
+	writeMetricsToFile()
+
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
@@ -816,4 +904,3 @@ slog.Info("Трассировка отключена - Jaeger не запуще�
 
 	slog.Info("Сервер остановлен")
 }
-
