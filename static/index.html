@@ -899,9 +899,8 @@
         </div>
       </div>
     </div>
-
     <script>
-      const { createApp, ref, computed, onMounted, watch } = Vue;
+      const { createApp, ref, computed, onMounted } = Vue;
 
       createApp({
         setup() {
@@ -923,77 +922,71 @@
 
           // Формы
           const newEmployee = ref({
-            fullName: "",
+            full_name: "",
             gender: "",
             age: "",
             education: "",
             position: "",
             passport: "",
+            department_id: "",
           });
 
           const searchFilters = ref({
-            fullName: "",
+            full_name: "",
             position: "",
             gender: "",
             education: "",
-            ageFrom: "",
-            ageTo: "",
+            age_from: "",
+            age_to: "",
           });
 
           // API функции
           const api = {
-            async get(url) {
-              const response = await fetch(`/api${url}`);
-              if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || "Ошибка сервера");
+            async request(url, options = {}) {
+              try {
+                const response = await fetch(`/api${url}`, {
+                  headers: {
+                    "Content-Type": "application/json",
+                    ...options.headers,
+                  },
+                  ...options,
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                  throw new Error(data.error || "Ошибка сервера");
+                }
+
+                return data;
+              } catch (err) {
+                throw new Error(err.message || "Ошибка сети");
               }
-              return response.json();
+            },
+
+            async get(url) {
+              return this.request(url);
             },
 
             async post(url, data) {
-              const response = await fetch(`/api${url}`, {
+              return this.request(url, {
                 method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
                 body: JSON.stringify(data),
               });
-              if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || "Ошибка сервера");
-              }
-              return response.json();
             },
 
             async put(url, data) {
-              const response = await fetch(`/api${url}`, {
+              return this.request(url, {
                 method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                },
                 body: JSON.stringify(data),
               });
-              if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || "Ошибка сервера");
-              }
-              return response.json();
             },
 
             async patch(url, data) {
-              const response = await fetch(`/api${url}`, {
+              return this.request(url, {
                 method: "PATCH",
-                headers: {
-                  "Content-Type": "application/json",
-                },
                 body: JSON.stringify(data),
               });
-              if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || "Ошибка сервера");
-              }
-              return response.json();
             },
           };
 
@@ -1002,10 +995,6 @@
             return departments.value.find(
               (d) => d.id === selectedDepartmentId.value
             );
-          });
-
-          const activeEmployees = computed(() => {
-            return employees.value.filter((emp) => emp.status !== "fired");
           });
 
           // Методы для работы с сообщениями
@@ -1068,29 +1057,26 @@
           const createEmployee = async () => {
             loading.value = true;
             try {
-              await api.post("/employees", {
-                fullName: newEmployee.value.fullName,
-                gender: newEmployee.value.gender,
-                age: newEmployee.value.age,
-                education: newEmployee.value.education,
-                position: newEmployee.value.position,
-                passport: newEmployee.value.passport,
-                departmentId: selectedDepartmentId.value,
-              });
+              newEmployee.value.department_id = selectedDepartmentId.value;
 
-              // Очистка формы
-              newEmployee.value = {
-                fullName: "",
-                gender: "",
-                age: "",
-                education: "",
-                position: "",
-                passport: "",
-              };
+              const result = await api.post("/employees", newEmployee.value);
 
-              showSuccess("✅ Сотрудник успешно создан!");
-              await loadEmployees();
-              setActiveTab("list");
+              if (result.success) {
+                // Очистка формы
+                newEmployee.value = {
+                  full_name: "",
+                  gender: "",
+                  age: "",
+                  education: "",
+                  position: "",
+                  passport: "",
+                  department_id: "",
+                };
+
+                showSuccess(result.message || "Сотрудник успешно создан!");
+                await loadEmployees();
+                activeTab.value = "list";
+              }
             } catch (err) {
               showError("Ошибка создания сотрудника: " + err.message);
             } finally {
@@ -1106,20 +1092,18 @@
           const saveEmployee = async () => {
             loading.value = true;
             try {
-              await api.put(`/employees/${editingEmployee.value.id}`, {
-                fullName: editingEmployee.value.full_name,
-                gender: editingEmployee.value.gender,
-                age: editingEmployee.value.age,
-                education: editingEmployee.value.education,
-                position: editingEmployee.value.position,
-                passport: editingEmployee.value.passport,
-              });
+              const result = await api.put(
+                `/employees/${editingEmployee.value.id}`,
+                editingEmployee.value
+              );
 
-              closeEditModal();
-              showSuccess("✅ Данные сотрудника обновлены!");
-              await loadEmployees();
-              if (activeTab.value === "search" && hasSearched.value) {
-                await searchEmployees();
+              if (result.success) {
+                closeEditModal();
+                showSuccess(result.message || "Данные сотрудника обновлены!");
+                await loadEmployees();
+                if (activeTab.value === "search" && hasSearched.value) {
+                  await searchEmployees();
+                }
               }
             } catch (err) {
               showError("Ошибка обновления сотрудника: " + err.message);
@@ -1143,20 +1127,23 @@
             if (confirm(`Подтвердите действие: ${statusTexts[newStatus]}?`)) {
               loading.value = true;
               try {
-                await api.patch(`/employees/${employeeId}/status`, {
-                  status: newStatus,
-                });
+                const result = await api.patch(
+                  `/employees/${employeeId}/status`,
+                  { status: newStatus }
+                );
 
-                const statusMessages = {
-                  vacation: "🏝️ Сотрудник отправлен в отпуск",
-                  active: "💼 Сотрудник вернулся из отпуска",
-                  fired: "🚪 Сотрудник уволен",
-                };
+                if (result.success) {
+                  const statusMessages = {
+                    vacation: "Сотрудник отправлен в отпуск",
+                    active: "Сотрудник вернулся из отпуска",
+                    fired: "Сотрудник уволен",
+                  };
 
-                showSuccess(statusMessages[newStatus]);
-                await loadEmployees();
-                if (activeTab.value === "search" && hasSearched.value) {
-                  await searchEmployees();
+                  showSuccess(result.message || statusMessages[newStatus]);
+                  await loadEmployees();
+                  if (activeTab.value === "search" && hasSearched.value) {
+                    await searchEmployees();
+                  }
                 }
               } catch (err) {
                 showError("Ошибка изменения статуса: " + err.message);
@@ -1164,10 +1151,6 @@
                 loading.value = false;
               }
             }
-          };
-
-          const fireEmployee = async (employee) => {
-            await changeStatus(employee.id, "fired");
           };
 
           const searchEmployees = async () => {
@@ -1189,12 +1172,12 @@
 
           const clearFilters = () => {
             searchFilters.value = {
-              fullName: "",
+              full_name: "",
               position: "",
               gender: "",
               education: "",
-              ageFrom: "",
-              ageTo: "",
+              age_from: "",
+              age_to: "",
             };
             searchResults.value = [];
             hasSearched.value = false;
@@ -1225,26 +1208,10 @@
             return educationMap[education] || education;
           };
 
-          // Watchers
-          watch(selectedDepartmentId, () => {
-            if (selectedDepartmentId.value) {
-              loadEmployees();
-            }
-          });
-
-          // Автоматический поиск при изменении фильтров
-          watch(
-            searchFilters,
-            () => {
-              if (activeTab.value === "search" && hasSearched.value) {
-                const debounceTimer = setTimeout(() => {
-                  searchEmployees();
-                }, 500);
-                return () => clearTimeout(debounceTimer);
-              }
-            },
-            { deep: true }
-          );
+          const getDepartmentName = (departmentId) => {
+            const dept = departments.value.find((d) => d.id === departmentId);
+            return dept ? dept.name : "Неизвестный департамент";
+          };
 
           // Инициализация
           onMounted(async () => {
@@ -1273,7 +1240,6 @@
 
             // Вычисляемые свойства
             selectedDepartment,
-            activeEmployees,
 
             // Методы
             setActiveTab,
@@ -1283,11 +1249,11 @@
             saveEmployee,
             closeEditModal,
             changeStatus,
-            fireEmployee,
             searchEmployees,
             clearFilters,
             getStatusText,
             getEducationText,
+            getDepartmentName,
           };
         },
       }).mount("#app");

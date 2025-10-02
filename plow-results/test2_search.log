@@ -1,0 +1,24 @@
+Summary:
+  Elapsed      100ms
+  Count         1500
+    2xx         1500
+  RPS       7977.221
+  Reads    1.149MB/s
+  Writes   1.385MB/s
+
+Statistics  Min   Mean    StdDev    Max  
+  Latency   0s   2.479ms  1.22ms  15.49ms
+
+Latency Percentile:
+  P50       P75      P90      P95      P99      P99.9   P99.99 
+  2.29ms  2.653ms  2.999ms  3.403ms  10.401ms  15.49ms  15.49ms
+
+Latency Histogram:
+  789µs      52   3.47%
+  2.187ms   844  56.27%
+  2.705ms   452  30.13%
+  3.312ms   127   8.47%
+  5.73ms     19   1.27%
+  12.606ms    4   0.27%
+  13.381ms    1   0.07%
+  15.49ms     1   0.07%
