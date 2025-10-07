@@ -89,6 +89,7 @@ Latency Histogram:
   31.003ms      8   0.01%
   46.103ms      2   0.00%
   53.074ms      1   0.00%
+
 PS C:\Go\Project> plow http://localhost:8080/api/departments -c 5 -d 30s  
 Benchmarking http://localhost:8080/api/departments for 30s using 5 connection(s).
 @ Real-time charts is listening on http://[::]:18888
@@ -117,6 +118,7 @@ Latency Histogram:
   54.103ms       9   0.00%
   64.172ms       5   0.00%
   66.799ms       1   0.00%
+
 PS C:\Go\Project> plow http://localhost:8080/api/departments -c 10 -d 1m
 Benchmarking http://localhost:8080/api/departments for 1m0s using 10 connection(s).
 @ Real-time charts is listening on http://[::]:18888
@@ -146,7 +148,6 @@ Latency Histogram:
   70.759ms       23   0.01%
   85.423ms        4   0.00%
   373.384ms      10   0.00%
-PS C:\Go\Project>
 
 http://localhost:8080/metrics
 ## METRICS
