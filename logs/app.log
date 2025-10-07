@@ -1,0 +1,33 @@
+{"time":"2025-10-02T20:58:34.000902+03:00","level":"INFO","msg":"Логгер инициализирован","log_file":"logs/app.log"}
+{"time":"2025-10-02T20:58:34.0257905+03:00","level":"INFO","msg":"Запись метрик в файл инициализирована","metrics_file":"metrics/metrics.log"}
+{"time":"2025-10-02T20:58:34.0257905+03:00","level":"INFO","msg":"Трассировка отключена - Jaeger не запущен"}
+{"time":"2025-10-02T20:58:34.0286896+03:00","level":"INFO","msg":"Запуск сервера","port":"8080"}
+{"time":"2025-10-02T20:59:05.31476+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-02T20:59:05.385832+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/departments","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-02T20:59:05.3943086+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/positions","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-02T20:59:11.7646842+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-02T20:59:11.922253+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/departments","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-02T20:59:11.928387+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/positions","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-02T20:59:11.928387+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/favicon.ico","status":404,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-02T20:59:18.3055046+03:00","level":"INFO","msg":"Завершение работы сервера..."}
+{"time":"2025-10-02T20:59:18.308272+03:00","level":"INFO","msg":"Сервер остановлен"}
+{"time":"2025-10-02T21:02:14.5358782+03:00","level":"INFO","msg":"Логгер инициализирован","log_file":"logs/app.log"}
+{"time":"2025-10-02T21:02:14.562108+03:00","level":"INFO","msg":"Запись метрик в файл инициализирована","metrics_file":"metrics/metrics.log"}
+{"time":"2025-10-02T21:02:14.562108+03:00","level":"INFO","msg":"Трассировка отключена - Jaeger не запущен"}
+{"time":"2025-10-02T21:02:14.5647767+03:00","level":"INFO","msg":"Запуск сервера","port":"8080"}
+{"time":"2025-10-02T21:02:32.9523995+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/","status":200,"duration":"787.1µs","client_ip":"::1"}
+{"time":"2025-10-02T21:02:33.3044331+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/departments","status":200,"duration":"44.5µs","client_ip":"::1"}
+{"time":"2025-10-02T21:02:33.3098338+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/positions","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-02T21:02:33.3098338+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/favicon.ico","status":404,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-02T21:02:42.4179812+03:00","level":"INFO","msg":"Завершение работы сервера..."}
+{"time":"2025-10-02T21:02:42.428063+03:00","level":"INFO","msg":"Сервер остановлен"}
+{"time":"2025-10-02T21:03:06.7996095+03:00","level":"INFO","msg":"Логгер инициализирован","log_file":"logs/app.log"}
+{"time":"2025-10-02T21:03:06.8256611+03:00","level":"INFO","msg":"Запись метрик в файл инициализирована","metrics_file":"metrics/metrics.log"}
+{"time":"2025-10-02T21:03:06.8256611+03:00","level":"INFO","msg":"Трассировка отключена - Jaeger не запущен"}
+{"time":"2025-10-02T21:03:06.8277594+03:00","level":"INFO","msg":"Запуск сервера","port":"8080"}
+{"time":"2025-10-02T21:03:17.456798+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-02T21:03:17.5668685+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/departments","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-02T21:03:17.6087628+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/positions","status":200,"duration":"40.6µs","client_ip":"::1"}
+{"time":"2025-10-02T21:03:17.6087628+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/favicon.ico","status":404,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-02T21:04:09.3684051+03:00","level":"INFO","msg":"Завершение работы сервера..."}
+{"time":"2025-10-02T21:04:09.3765689+03:00","level":"INFO","msg":"Сервер остановлен"}

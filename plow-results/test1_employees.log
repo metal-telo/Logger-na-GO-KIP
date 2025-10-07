@@ -1,0 +1,48 @@
+Summary:
+  Elapsed      200ms
+  Count         1471  |■■■■■■■■■■■■■■■■■■■■■■■■■■■■          |
+    2xx         1471
+  RPS       7340.155
+  Reads    8.008MB/s
+  Writes   0.626MB/s
+
+Statistics  Min   Mean    StdDev     Max   
+  Latency   0s   3.371ms  1.619ms  17.662ms
+
+Latency Percentile:
+  P50        P75     P90      P95      P99      P99.9     P99.99 
+  3.118ms  3.593ms  4.12ms  4.474ms  14.305ms  17.662ms  17.662ms
+
+Latency Histogram:
+  2.766ms   695  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  3.37ms    517  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  4.188ms   217  ■■■■■■■■■■■■
+  6.187ms    28  ■■
+  13.549ms    6  
+  15.817ms    4  
+  16.606ms    3  
+  17.662ms    1  
+Summary:
+  Elapsed      200ms
+  Count         2000
+    2xx         2000
+  RPS       7715.034
+  Reads    8.417MB/s
+  Writes   0.647MB/s
+
+Statistics  Min   Mean    StdDev     Max   
+  Latency   0s   3.216ms  1.437ms  17.662ms
+
+Latency Percentile:
+  P50   P75      P90     P95      P99      P99.9     P99.99 
+  3ms  3.41ms  4.017ms  4.34ms  12.563ms  16.606ms  17.662ms
+
+Latency Histogram:
+  2.684ms   932  46.60%
+  3.226ms   758  37.90%
+  4.087ms   265  13.25%
+  6.132ms    31   1.55%
+  13.549ms    6   0.30%
+  15.817ms    4   0.20%
+  16.606ms    3   0.15%
+  17.662ms    1   0.05%
