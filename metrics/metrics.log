@@ -17244,3 +17244,1550 @@ Type: COUNTER
 
 === END METRICS DUMP ===
 
+=== METRICS DUMP 2025-10-08T02:35:44+03:00 ===
+Metric: employees_total
+Help: Total number of employees
+Type: GAUGE
+  employees_total: 0.000000
+
+Metric: go_gc_duration_seconds
+Help: A summary of the pause duration of garbage collection cycles.
+Type: SUMMARY
+  go_gc_duration_seconds: 0.183555
+
+Metric: go_goroutines
+Help: Number of goroutines that currently exist.
+Type: GAUGE
+  go_goroutines: 7.000000
+
+Metric: go_info
+Help: Information about the Go environment.
+Type: GAUGE
+  go_info {version=go1.25.0}: 1.000000
+
+Metric: go_memstats_alloc_bytes
+Help: Number of bytes allocated and still in use.
+Type: GAUGE
+  go_memstats_alloc_bytes: 2206752.000000
+
+Metric: go_memstats_alloc_bytes_total
+Help: Total number of bytes allocated, even if freed.
+Type: COUNTER
+  go_memstats_alloc_bytes_total: 3945681776.000000
+
+Metric: go_memstats_buck_hash_sys_bytes
+Help: Number of bytes used by the profiling bucket hash table.
+Type: GAUGE
+  go_memstats_buck_hash_sys_bytes: 7674.000000
+
+Metric: go_memstats_frees_total
+Help: Total number of frees.
+Type: COUNTER
+  go_memstats_frees_total: 35907372.000000
+
+Metric: go_memstats_gc_sys_bytes
+Help: Number of bytes used for garbage collection system metadata.
+Type: GAUGE
+  go_memstats_gc_sys_bytes: 3188784.000000
+
+Metric: go_memstats_heap_alloc_bytes
+Help: Number of heap bytes allocated and still in use.
+Type: GAUGE
+  go_memstats_heap_alloc_bytes: 2206752.000000
+
+Metric: go_memstats_heap_idle_bytes
+Help: Number of heap bytes waiting to be used.
+Type: GAUGE
+  go_memstats_heap_idle_bytes: 6553600.000000
+
+Metric: go_memstats_heap_inuse_bytes
+Help: Number of heap bytes that are in use.
+Type: GAUGE
+  go_memstats_heap_inuse_bytes: 4259840.000000
+
+Metric: go_memstats_heap_objects
+Help: Number of allocated objects.
+Type: GAUGE
+  go_memstats_heap_objects: 10833.000000
+
+Metric: go_memstats_heap_released_bytes
+Help: Number of heap bytes released to OS.
+Type: GAUGE
+  go_memstats_heap_released_bytes: 5636096.000000
+
+Metric: go_memstats_heap_sys_bytes
+Help: Number of heap bytes obtained from system.
+Type: GAUGE
+  go_memstats_heap_sys_bytes: 10813440.000000
+
+Metric: go_memstats_last_gc_time_seconds
+Help: Number of seconds since 1970 of last garbage collection.
+Type: GAUGE
+  go_memstats_last_gc_time_seconds: 1759880114.339075
+
+Metric: go_memstats_lookups_total
+Help: Total number of pointer lookups.
+Type: COUNTER
+  go_memstats_lookups_total: 0.000000
+
+Metric: go_memstats_mallocs_total
+Help: Total number of mallocs.
+Type: COUNTER
+  go_memstats_mallocs_total: 35918205.000000
+
+Metric: go_memstats_mcache_inuse_bytes
+Help: Number of bytes in use by mcache structures.
+Type: GAUGE
+  go_memstats_mcache_inuse_bytes: 9408.000000
+
+Metric: go_memstats_mcache_sys_bytes
+Help: Number of bytes used for mcache structures obtained from system.
+Type: GAUGE
+  go_memstats_mcache_sys_bytes: 15288.000000
+
+Metric: go_memstats_mspan_inuse_bytes
+Help: Number of bytes in use by mspan structures.
+Type: GAUGE
+  go_memstats_mspan_inuse_bytes: 149440.000000
+
+Metric: go_memstats_mspan_sys_bytes
+Help: Number of bytes used for mspan structures obtained from system.
+Type: GAUGE
+  go_memstats_mspan_sys_bytes: 212160.000000
+
+Metric: go_memstats_next_gc_bytes
+Help: Number of heap bytes when next garbage collection will take place.
+Type: GAUGE
+  go_memstats_next_gc_bytes: 4885858.000000
+
+Metric: go_memstats_other_sys_bytes
+Help: Number of bytes used for other system allocations.
+Type: GAUGE
+  go_memstats_other_sys_bytes: 1970526.000000
+
+Metric: go_memstats_stack_inuse_bytes
+Help: Number of bytes in use by the stack allocator.
+Type: GAUGE
+  go_memstats_stack_inuse_bytes: 1769472.000000
+
+Metric: go_memstats_stack_sys_bytes
+Help: Number of bytes obtained from system for stack allocator.
+Type: GAUGE
+  go_memstats_stack_sys_bytes: 1769472.000000
+
+Metric: go_memstats_sys_bytes
+Help: Number of bytes obtained from system.
+Type: GAUGE
+  go_memstats_sys_bytes: 17977344.000000
+
+Metric: go_threads
+Help: Number of OS threads created.
+Type: GAUGE
+  go_threads: 15.000000
+
+Metric: http_request_duration_seconds
+Help: HTTP request duration in seconds
+Type: HISTOGRAM
+  http_request_duration_seconds {method=GET, path=/}: 0.000686
+  http_request_duration_seconds {method=GET, path=/api/departments}: 14.225760
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept1}: 0.001007
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept2}: 0.000000
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept3}: 0.000023
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept4}: 0.000000
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept5}: 0.000031
+  http_request_duration_seconds {method=GET, path=/api/positions}: 0.000000
+  http_request_duration_seconds {method=GET, path=/favicon.ico}: 0.000000
+  http_request_duration_seconds {method=GET, path=/metrics}: 0.004917
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp1/status}: 0.000052
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp2/status}: 0.000000
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp3/status}: 0.000000
+  http_request_duration_seconds {method=PUT, path=/api/employees/emp1}: 0.000050
+
+Metric: http_requests_total
+Help: Total number of HTTP requests
+Type: COUNTER
+  http_requests_total {method=GET, path=/, status=200}: 7.000000
+  http_requests_total {method=GET, path=/api/departments, status=200}: 657722.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept1, status=200}: 6.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept2, status=200}: 3.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept3, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept4, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept5, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/positions, status=200}: 7.000000
+  http_requests_total {method=GET, path=/favicon.ico, status=404}: 1.000000
+  http_requests_total {method=GET, path=/metrics, status=200}: 3.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp1/status, status=200}: 2.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp2/status, status=200}: 1.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp3/status, status=200}: 2.000000
+  http_requests_total {method=PUT, path=/api/employees/emp1, status=200}: 1.000000
+
+Metric: process_cpu_seconds_total
+Help: Total user and system CPU time spent in seconds.
+Type: COUNTER
+  process_cpu_seconds_total: 146.484375
+
+Metric: process_max_fds
+Help: Maximum number of open file descriptors.
+Type: GAUGE
+  process_max_fds: 16777216.000000
+
+Metric: process_open_fds
+Help: Number of open file descriptors.
+Type: GAUGE
+  process_open_fds: 190.000000
+
+Metric: process_resident_memory_bytes
+Help: Resident memory size in bytes.
+Type: GAUGE
+  process_resident_memory_bytes: 20262912.000000
+
+Metric: process_start_time_seconds
+Help: Start time of the process since unix epoch in seconds.
+Type: GAUGE
+  process_start_time_seconds: 1759877833.000000
+
+Metric: process_virtual_memory_bytes
+Help: Virtual memory size in bytes.
+Type: GAUGE
+  process_virtual_memory_bytes: 23142400.000000
+
+Metric: promhttp_metric_handler_requests_in_flight
+Help: Current number of scrapes being served.
+Type: GAUGE
+  promhttp_metric_handler_requests_in_flight: 0.000000
+
+Metric: promhttp_metric_handler_requests_total
+Help: Total number of scrapes by HTTP status code.
+Type: COUNTER
+  promhttp_metric_handler_requests_total {code=200}: 3.000000
+  promhttp_metric_handler_requests_total {code=500}: 0.000000
+  promhttp_metric_handler_requests_total {code=503}: 0.000000
+
+=== END METRICS DUMP ===
+
+=== METRICS DUMP 2025-10-08T02:36:14+03:00 ===
+Metric: employees_total
+Help: Total number of employees
+Type: GAUGE
+  employees_total: 0.000000
+
+Metric: go_gc_duration_seconds
+Help: A summary of the pause duration of garbage collection cycles.
+Type: SUMMARY
+  go_gc_duration_seconds: 0.183555
+
+Metric: go_goroutines
+Help: Number of goroutines that currently exist.
+Type: GAUGE
+  go_goroutines: 7.000000
+
+Metric: go_info
+Help: Information about the Go environment.
+Type: GAUGE
+  go_info {version=go1.25.0}: 1.000000
+
+Metric: go_memstats_alloc_bytes
+Help: Number of bytes allocated and still in use.
+Type: GAUGE
+  go_memstats_alloc_bytes: 2260000.000000
+
+Metric: go_memstats_alloc_bytes_total
+Help: Total number of bytes allocated, even if freed.
+Type: COUNTER
+  go_memstats_alloc_bytes_total: 3945735024.000000
+
+Metric: go_memstats_buck_hash_sys_bytes
+Help: Number of bytes used by the profiling bucket hash table.
+Type: GAUGE
+  go_memstats_buck_hash_sys_bytes: 7674.000000
+
+Metric: go_memstats_frees_total
+Help: Total number of frees.
+Type: COUNTER
+  go_memstats_frees_total: 35907372.000000
+
+Metric: go_memstats_gc_sys_bytes
+Help: Number of bytes used for garbage collection system metadata.
+Type: GAUGE
+  go_memstats_gc_sys_bytes: 3188784.000000
+
+Metric: go_memstats_heap_alloc_bytes
+Help: Number of heap bytes allocated and still in use.
+Type: GAUGE
+  go_memstats_heap_alloc_bytes: 2260000.000000
+
+Metric: go_memstats_heap_idle_bytes
+Help: Number of heap bytes waiting to be used.
+Type: GAUGE
+  go_memstats_heap_idle_bytes: 6479872.000000
+
+Metric: go_memstats_heap_inuse_bytes
+Help: Number of heap bytes that are in use.
+Type: GAUGE
+  go_memstats_heap_inuse_bytes: 4333568.000000
+
+Metric: go_memstats_heap_objects
+Help: Number of allocated objects.
+Type: GAUGE
+  go_memstats_heap_objects: 10984.000000
+
+Metric: go_memstats_heap_released_bytes
+Help: Number of heap bytes released to OS.
+Type: GAUGE
+  go_memstats_heap_released_bytes: 5701632.000000
+
+Metric: go_memstats_heap_sys_bytes
+Help: Number of heap bytes obtained from system.
+Type: GAUGE
+  go_memstats_heap_sys_bytes: 10813440.000000
+
+Metric: go_memstats_last_gc_time_seconds
+Help: Number of seconds since 1970 of last garbage collection.
+Type: GAUGE
+  go_memstats_last_gc_time_seconds: 1759880114.339075
+
+Metric: go_memstats_lookups_total
+Help: Total number of pointer lookups.
+Type: COUNTER
+  go_memstats_lookups_total: 0.000000
+
+Metric: go_memstats_mallocs_total
+Help: Total number of mallocs.
+Type: COUNTER
+  go_memstats_mallocs_total: 35918356.000000
+
+Metric: go_memstats_mcache_inuse_bytes
+Help: Number of bytes in use by mcache structures.
+Type: GAUGE
+  go_memstats_mcache_inuse_bytes: 9408.000000
+
+Metric: go_memstats_mcache_sys_bytes
+Help: Number of bytes used for mcache structures obtained from system.
+Type: GAUGE
+  go_memstats_mcache_sys_bytes: 15288.000000
+
+Metric: go_memstats_mspan_inuse_bytes
+Help: Number of bytes in use by mspan structures.
+Type: GAUGE
+  go_memstats_mspan_inuse_bytes: 149440.000000
+
+Metric: go_memstats_mspan_sys_bytes
+Help: Number of bytes used for mspan structures obtained from system.
+Type: GAUGE
+  go_memstats_mspan_sys_bytes: 212160.000000
+
+Metric: go_memstats_next_gc_bytes
+Help: Number of heap bytes when next garbage collection will take place.
+Type: GAUGE
+  go_memstats_next_gc_bytes: 4885858.000000
+
+Metric: go_memstats_other_sys_bytes
+Help: Number of bytes used for other system allocations.
+Type: GAUGE
+  go_memstats_other_sys_bytes: 1970526.000000
+
+Metric: go_memstats_stack_inuse_bytes
+Help: Number of bytes in use by the stack allocator.
+Type: GAUGE
+  go_memstats_stack_inuse_bytes: 1769472.000000
+
+Metric: go_memstats_stack_sys_bytes
+Help: Number of bytes obtained from system for stack allocator.
+Type: GAUGE
+  go_memstats_stack_sys_bytes: 1769472.000000
+
+Metric: go_memstats_sys_bytes
+Help: Number of bytes obtained from system.
+Type: GAUGE
+  go_memstats_sys_bytes: 17977344.000000
+
+Metric: go_threads
+Help: Number of OS threads created.
+Type: GAUGE
+  go_threads: 15.000000
+
+Metric: http_request_duration_seconds
+Help: HTTP request duration in seconds
+Type: HISTOGRAM
+  http_request_duration_seconds {method=GET, path=/}: 0.000686
+  http_request_duration_seconds {method=GET, path=/api/departments}: 14.225760
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept1}: 0.001007
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept2}: 0.000000
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept3}: 0.000023
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept4}: 0.000000
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept5}: 0.000031
+  http_request_duration_seconds {method=GET, path=/api/positions}: 0.000000
+  http_request_duration_seconds {method=GET, path=/favicon.ico}: 0.000000
+  http_request_duration_seconds {method=GET, path=/metrics}: 0.004917
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp1/status}: 0.000052
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp2/status}: 0.000000
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp3/status}: 0.000000
+  http_request_duration_seconds {method=PUT, path=/api/employees/emp1}: 0.000050
+
+Metric: http_requests_total
+Help: Total number of HTTP requests
+Type: COUNTER
+  http_requests_total {method=GET, path=/, status=200}: 7.000000
+  http_requests_total {method=GET, path=/api/departments, status=200}: 657722.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept1, status=200}: 6.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept2, status=200}: 3.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept3, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept4, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept5, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/positions, status=200}: 7.000000
+  http_requests_total {method=GET, path=/favicon.ico, status=404}: 1.000000
+  http_requests_total {method=GET, path=/metrics, status=200}: 3.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp1/status, status=200}: 2.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp2/status, status=200}: 1.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp3/status, status=200}: 2.000000
+  http_requests_total {method=PUT, path=/api/employees/emp1, status=200}: 1.000000
+
+Metric: process_cpu_seconds_total
+Help: Total user and system CPU time spent in seconds.
+Type: COUNTER
+  process_cpu_seconds_total: 146.484375
+
+Metric: process_max_fds
+Help: Maximum number of open file descriptors.
+Type: GAUGE
+  process_max_fds: 16777216.000000
+
+Metric: process_open_fds
+Help: Number of open file descriptors.
+Type: GAUGE
+  process_open_fds: 191.000000
+
+Metric: process_resident_memory_bytes
+Help: Resident memory size in bytes.
+Type: GAUGE
+  process_resident_memory_bytes: 20221952.000000
+
+Metric: process_start_time_seconds
+Help: Start time of the process since unix epoch in seconds.
+Type: GAUGE
+  process_start_time_seconds: 1759877833.000000
+
+Metric: process_virtual_memory_bytes
+Help: Virtual memory size in bytes.
+Type: GAUGE
+  process_virtual_memory_bytes: 23076864.000000
+
+Metric: promhttp_metric_handler_requests_in_flight
+Help: Current number of scrapes being served.
+Type: GAUGE
+  promhttp_metric_handler_requests_in_flight: 0.000000
+
+Metric: promhttp_metric_handler_requests_total
+Help: Total number of scrapes by HTTP status code.
+Type: COUNTER
+  promhttp_metric_handler_requests_total {code=200}: 3.000000
+  promhttp_metric_handler_requests_total {code=500}: 0.000000
+  promhttp_metric_handler_requests_total {code=503}: 0.000000
+
+=== END METRICS DUMP ===
+
+=== METRICS DUMP 2025-10-08T02:36:44+03:00 ===
+Metric: employees_total
+Help: Total number of employees
+Type: GAUGE
+  employees_total: 0.000000
+
+Metric: go_gc_duration_seconds
+Help: A summary of the pause duration of garbage collection cycles.
+Type: SUMMARY
+  go_gc_duration_seconds: 0.183555
+
+Metric: go_goroutines
+Help: Number of goroutines that currently exist.
+Type: GAUGE
+  go_goroutines: 7.000000
+
+Metric: go_info
+Help: Information about the Go environment.
+Type: GAUGE
+  go_info {version=go1.25.0}: 1.000000
+
+Metric: go_memstats_alloc_bytes
+Help: Number of bytes allocated and still in use.
+Type: GAUGE
+  go_memstats_alloc_bytes: 2291216.000000
+
+Metric: go_memstats_alloc_bytes_total
+Help: Total number of bytes allocated, even if freed.
+Type: COUNTER
+  go_memstats_alloc_bytes_total: 3945766240.000000
+
+Metric: go_memstats_buck_hash_sys_bytes
+Help: Number of bytes used by the profiling bucket hash table.
+Type: GAUGE
+  go_memstats_buck_hash_sys_bytes: 7674.000000
+
+Metric: go_memstats_frees_total
+Help: Total number of frees.
+Type: COUNTER
+  go_memstats_frees_total: 35907372.000000
+
+Metric: go_memstats_gc_sys_bytes
+Help: Number of bytes used for garbage collection system metadata.
+Type: GAUGE
+  go_memstats_gc_sys_bytes: 3188784.000000
+
+Metric: go_memstats_heap_alloc_bytes
+Help: Number of heap bytes allocated and still in use.
+Type: GAUGE
+  go_memstats_heap_alloc_bytes: 2291216.000000
+
+Metric: go_memstats_heap_idle_bytes
+Help: Number of heap bytes waiting to be used.
+Type: GAUGE
+  go_memstats_heap_idle_bytes: 6307840.000000
+
+Metric: go_memstats_heap_inuse_bytes
+Help: Number of heap bytes that are in use.
+Type: GAUGE
+  go_memstats_heap_inuse_bytes: 4505600.000000
+
+Metric: go_memstats_heap_objects
+Help: Number of allocated objects.
+Type: GAUGE
+  go_memstats_heap_objects: 11146.000000
+
+Metric: go_memstats_heap_released_bytes
+Help: Number of heap bytes released to OS.
+Type: GAUGE
+  go_memstats_heap_released_bytes: 5701632.000000
+
+Metric: go_memstats_heap_sys_bytes
+Help: Number of heap bytes obtained from system.
+Type: GAUGE
+  go_memstats_heap_sys_bytes: 10813440.000000
+
+Metric: go_memstats_last_gc_time_seconds
+Help: Number of seconds since 1970 of last garbage collection.
+Type: GAUGE
+  go_memstats_last_gc_time_seconds: 1759880114.339075
+
+Metric: go_memstats_lookups_total
+Help: Total number of pointer lookups.
+Type: COUNTER
+  go_memstats_lookups_total: 0.000000
+
+Metric: go_memstats_mallocs_total
+Help: Total number of mallocs.
+Type: COUNTER
+  go_memstats_mallocs_total: 35918518.000000
+
+Metric: go_memstats_mcache_inuse_bytes
+Help: Number of bytes in use by mcache structures.
+Type: GAUGE
+  go_memstats_mcache_inuse_bytes: 9408.000000
+
+Metric: go_memstats_mcache_sys_bytes
+Help: Number of bytes used for mcache structures obtained from system.
+Type: GAUGE
+  go_memstats_mcache_sys_bytes: 15288.000000
+
+Metric: go_memstats_mspan_inuse_bytes
+Help: Number of bytes in use by mspan structures.
+Type: GAUGE
+  go_memstats_mspan_inuse_bytes: 149440.000000
+
+Metric: go_memstats_mspan_sys_bytes
+Help: Number of bytes used for mspan structures obtained from system.
+Type: GAUGE
+  go_memstats_mspan_sys_bytes: 212160.000000
+
+Metric: go_memstats_next_gc_bytes
+Help: Number of heap bytes when next garbage collection will take place.
+Type: GAUGE
+  go_memstats_next_gc_bytes: 4885858.000000
+
+Metric: go_memstats_other_sys_bytes
+Help: Number of bytes used for other system allocations.
+Type: GAUGE
+  go_memstats_other_sys_bytes: 1970526.000000
+
+Metric: go_memstats_stack_inuse_bytes
+Help: Number of bytes in use by the stack allocator.
+Type: GAUGE
+  go_memstats_stack_inuse_bytes: 1769472.000000
+
+Metric: go_memstats_stack_sys_bytes
+Help: Number of bytes obtained from system for stack allocator.
+Type: GAUGE
+  go_memstats_stack_sys_bytes: 1769472.000000
+
+Metric: go_memstats_sys_bytes
+Help: Number of bytes obtained from system.
+Type: GAUGE
+  go_memstats_sys_bytes: 17977344.000000
+
+Metric: go_threads
+Help: Number of OS threads created.
+Type: GAUGE
+  go_threads: 15.000000
+
+Metric: http_request_duration_seconds
+Help: HTTP request duration in seconds
+Type: HISTOGRAM
+  http_request_duration_seconds {method=GET, path=/}: 0.000686
+  http_request_duration_seconds {method=GET, path=/api/departments}: 14.225760
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept1}: 0.001007
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept2}: 0.000000
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept3}: 0.000023
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept4}: 0.000000
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept5}: 0.000031
+  http_request_duration_seconds {method=GET, path=/api/positions}: 0.000000
+  http_request_duration_seconds {method=GET, path=/favicon.ico}: 0.000000
+  http_request_duration_seconds {method=GET, path=/metrics}: 0.004917
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp1/status}: 0.000052
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp2/status}: 0.000000
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp3/status}: 0.000000
+  http_request_duration_seconds {method=PUT, path=/api/employees/emp1}: 0.000050
+
+Metric: http_requests_total
+Help: Total number of HTTP requests
+Type: COUNTER
+  http_requests_total {method=GET, path=/, status=200}: 7.000000
+  http_requests_total {method=GET, path=/api/departments, status=200}: 657722.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept1, status=200}: 6.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept2, status=200}: 3.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept3, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept4, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept5, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/positions, status=200}: 7.000000
+  http_requests_total {method=GET, path=/favicon.ico, status=404}: 1.000000
+  http_requests_total {method=GET, path=/metrics, status=200}: 3.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp1/status, status=200}: 2.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp2/status, status=200}: 1.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp3/status, status=200}: 2.000000
+  http_requests_total {method=PUT, path=/api/employees/emp1, status=200}: 1.000000
+
+Metric: process_cpu_seconds_total
+Help: Total user and system CPU time spent in seconds.
+Type: COUNTER
+  process_cpu_seconds_total: 146.515625
+
+Metric: process_max_fds
+Help: Maximum number of open file descriptors.
+Type: GAUGE
+  process_max_fds: 16777216.000000
+
+Metric: process_open_fds
+Help: Number of open file descriptors.
+Type: GAUGE
+  process_open_fds: 190.000000
+
+Metric: process_resident_memory_bytes
+Help: Resident memory size in bytes.
+Type: GAUGE
+  process_resident_memory_bytes: 20234240.000000
+
+Metric: process_start_time_seconds
+Help: Start time of the process since unix epoch in seconds.
+Type: GAUGE
+  process_start_time_seconds: 1759877833.000000
+
+Metric: process_virtual_memory_bytes
+Help: Virtual memory size in bytes.
+Type: GAUGE
+  process_virtual_memory_bytes: 23076864.000000
+
+Metric: promhttp_metric_handler_requests_in_flight
+Help: Current number of scrapes being served.
+Type: GAUGE
+  promhttp_metric_handler_requests_in_flight: 0.000000
+
+Metric: promhttp_metric_handler_requests_total
+Help: Total number of scrapes by HTTP status code.
+Type: COUNTER
+  promhttp_metric_handler_requests_total {code=200}: 3.000000
+  promhttp_metric_handler_requests_total {code=500}: 0.000000
+  promhttp_metric_handler_requests_total {code=503}: 0.000000
+
+=== END METRICS DUMP ===
+
+=== METRICS DUMP 2025-10-08T02:37:14+03:00 ===
+Metric: employees_total
+Help: Total number of employees
+Type: GAUGE
+  employees_total: 0.000000
+
+Metric: go_gc_duration_seconds
+Help: A summary of the pause duration of garbage collection cycles.
+Type: SUMMARY
+  go_gc_duration_seconds: 0.183555
+
+Metric: go_goroutines
+Help: Number of goroutines that currently exist.
+Type: GAUGE
+  go_goroutines: 7.000000
+
+Metric: go_info
+Help: Information about the Go environment.
+Type: GAUGE
+  go_info {version=go1.25.0}: 1.000000
+
+Metric: go_memstats_alloc_bytes
+Help: Number of bytes allocated and still in use.
+Type: GAUGE
+  go_memstats_alloc_bytes: 2389728.000000
+
+Metric: go_memstats_alloc_bytes_total
+Help: Total number of bytes allocated, even if freed.
+Type: COUNTER
+  go_memstats_alloc_bytes_total: 3945864752.000000
+
+Metric: go_memstats_buck_hash_sys_bytes
+Help: Number of bytes used by the profiling bucket hash table.
+Type: GAUGE
+  go_memstats_buck_hash_sys_bytes: 7674.000000
+
+Metric: go_memstats_frees_total
+Help: Total number of frees.
+Type: COUNTER
+  go_memstats_frees_total: 35907744.000000
+
+Metric: go_memstats_gc_sys_bytes
+Help: Number of bytes used for garbage collection system metadata.
+Type: GAUGE
+  go_memstats_gc_sys_bytes: 3188784.000000
+
+Metric: go_memstats_heap_alloc_bytes
+Help: Number of heap bytes allocated and still in use.
+Type: GAUGE
+  go_memstats_heap_alloc_bytes: 2389728.000000
+
+Metric: go_memstats_heap_idle_bytes
+Help: Number of heap bytes waiting to be used.
+Type: GAUGE
+  go_memstats_heap_idle_bytes: 6160384.000000
+
+Metric: go_memstats_heap_inuse_bytes
+Help: Number of heap bytes that are in use.
+Type: GAUGE
+  go_memstats_heap_inuse_bytes: 4653056.000000
+
+Metric: go_memstats_heap_objects
+Help: Number of allocated objects.
+Type: GAUGE
+  go_memstats_heap_objects: 12810.000000
+
+Metric: go_memstats_heap_released_bytes
+Help: Number of heap bytes released to OS.
+Type: GAUGE
+  go_memstats_heap_released_bytes: 5701632.000000
+
+Metric: go_memstats_heap_sys_bytes
+Help: Number of heap bytes obtained from system.
+Type: GAUGE
+  go_memstats_heap_sys_bytes: 10813440.000000
+
+Metric: go_memstats_last_gc_time_seconds
+Help: Number of seconds since 1970 of last garbage collection.
+Type: GAUGE
+  go_memstats_last_gc_time_seconds: 1759880114.339075
+
+Metric: go_memstats_lookups_total
+Help: Total number of pointer lookups.
+Type: COUNTER
+  go_memstats_lookups_total: 0.000000
+
+Metric: go_memstats_mallocs_total
+Help: Total number of mallocs.
+Type: COUNTER
+  go_memstats_mallocs_total: 35920554.000000
+
+Metric: go_memstats_mcache_inuse_bytes
+Help: Number of bytes in use by mcache structures.
+Type: GAUGE
+  go_memstats_mcache_inuse_bytes: 9408.000000
+
+Metric: go_memstats_mcache_sys_bytes
+Help: Number of bytes used for mcache structures obtained from system.
+Type: GAUGE
+  go_memstats_mcache_sys_bytes: 15288.000000
+
+Metric: go_memstats_mspan_inuse_bytes
+Help: Number of bytes in use by mspan structures.
+Type: GAUGE
+  go_memstats_mspan_inuse_bytes: 149440.000000
+
+Metric: go_memstats_mspan_sys_bytes
+Help: Number of bytes used for mspan structures obtained from system.
+Type: GAUGE
+  go_memstats_mspan_sys_bytes: 212160.000000
+
+Metric: go_memstats_next_gc_bytes
+Help: Number of heap bytes when next garbage collection will take place.
+Type: GAUGE
+  go_memstats_next_gc_bytes: 4885858.000000
+
+Metric: go_memstats_other_sys_bytes
+Help: Number of bytes used for other system allocations.
+Type: GAUGE
+  go_memstats_other_sys_bytes: 1970526.000000
+
+Metric: go_memstats_stack_inuse_bytes
+Help: Number of bytes in use by the stack allocator.
+Type: GAUGE
+  go_memstats_stack_inuse_bytes: 1769472.000000
+
+Metric: go_memstats_stack_sys_bytes
+Help: Number of bytes obtained from system for stack allocator.
+Type: GAUGE
+  go_memstats_stack_sys_bytes: 1769472.000000
+
+Metric: go_memstats_sys_bytes
+Help: Number of bytes obtained from system.
+Type: GAUGE
+  go_memstats_sys_bytes: 17977344.000000
+
+Metric: go_threads
+Help: Number of OS threads created.
+Type: GAUGE
+  go_threads: 15.000000
+
+Metric: http_request_duration_seconds
+Help: HTTP request duration in seconds
+Type: HISTOGRAM
+  http_request_duration_seconds {method=GET, path=/}: 0.000686
+  http_request_duration_seconds {method=GET, path=/api/departments}: 14.225760
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept1}: 0.001007
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept2}: 0.000000
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept3}: 0.000023
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept4}: 0.000000
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept5}: 0.000031
+  http_request_duration_seconds {method=GET, path=/api/positions}: 0.000000
+  http_request_duration_seconds {method=GET, path=/favicon.ico}: 0.000000
+  http_request_duration_seconds {method=GET, path=/metrics}: 0.004917
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp1/status}: 0.000052
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp2/status}: 0.000000
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp3/status}: 0.000000
+  http_request_duration_seconds {method=PUT, path=/api/employees/emp1}: 0.000050
+
+Metric: http_requests_total
+Help: Total number of HTTP requests
+Type: COUNTER
+  http_requests_total {method=GET, path=/, status=200}: 7.000000
+  http_requests_total {method=GET, path=/api/departments, status=200}: 657722.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept1, status=200}: 6.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept2, status=200}: 3.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept3, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept4, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept5, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/positions, status=200}: 7.000000
+  http_requests_total {method=GET, path=/favicon.ico, status=404}: 1.000000
+  http_requests_total {method=GET, path=/metrics, status=200}: 3.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp1/status, status=200}: 2.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp2/status, status=200}: 1.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp3/status, status=200}: 2.000000
+  http_requests_total {method=PUT, path=/api/employees/emp1, status=200}: 1.000000
+
+Metric: process_cpu_seconds_total
+Help: Total user and system CPU time spent in seconds.
+Type: COUNTER
+  process_cpu_seconds_total: 146.562500
+
+Metric: process_max_fds
+Help: Maximum number of open file descriptors.
+Type: GAUGE
+  process_max_fds: 16777216.000000
+
+Metric: process_open_fds
+Help: Number of open file descriptors.
+Type: GAUGE
+  process_open_fds: 191.000000
+
+Metric: process_resident_memory_bytes
+Help: Resident memory size in bytes.
+Type: GAUGE
+  process_resident_memory_bytes: 20234240.000000
+
+Metric: process_start_time_seconds
+Help: Start time of the process since unix epoch in seconds.
+Type: GAUGE
+  process_start_time_seconds: 1759877833.000000
+
+Metric: process_virtual_memory_bytes
+Help: Virtual memory size in bytes.
+Type: GAUGE
+  process_virtual_memory_bytes: 23076864.000000
+
+Metric: promhttp_metric_handler_requests_in_flight
+Help: Current number of scrapes being served.
+Type: GAUGE
+  promhttp_metric_handler_requests_in_flight: 0.000000
+
+Metric: promhttp_metric_handler_requests_total
+Help: Total number of scrapes by HTTP status code.
+Type: COUNTER
+  promhttp_metric_handler_requests_total {code=200}: 3.000000
+  promhttp_metric_handler_requests_total {code=500}: 0.000000
+  promhttp_metric_handler_requests_total {code=503}: 0.000000
+
+=== END METRICS DUMP ===
+
+=== METRICS DUMP 2025-10-08T02:37:44+03:00 ===
+Metric: employees_total
+Help: Total number of employees
+Type: GAUGE
+  employees_total: 0.000000
+
+Metric: go_gc_duration_seconds
+Help: A summary of the pause duration of garbage collection cycles.
+Type: SUMMARY
+  go_gc_duration_seconds: 0.183555
+
+Metric: go_goroutines
+Help: Number of goroutines that currently exist.
+Type: GAUGE
+  go_goroutines: 7.000000
+
+Metric: go_info
+Help: Information about the Go environment.
+Type: GAUGE
+  go_info {version=go1.25.0}: 1.000000
+
+Metric: go_memstats_alloc_bytes
+Help: Number of bytes allocated and still in use.
+Type: GAUGE
+  go_memstats_alloc_bytes: 2488816.000000
+
+Metric: go_memstats_alloc_bytes_total
+Help: Total number of bytes allocated, even if freed.
+Type: COUNTER
+  go_memstats_alloc_bytes_total: 3945963840.000000
+
+Metric: go_memstats_buck_hash_sys_bytes
+Help: Number of bytes used by the profiling bucket hash table.
+Type: GAUGE
+  go_memstats_buck_hash_sys_bytes: 7674.000000
+
+Metric: go_memstats_frees_total
+Help: Total number of frees.
+Type: COUNTER
+  go_memstats_frees_total: 35907885.000000
+
+Metric: go_memstats_gc_sys_bytes
+Help: Number of bytes used for garbage collection system metadata.
+Type: GAUGE
+  go_memstats_gc_sys_bytes: 3221552.000000
+
+Metric: go_memstats_heap_alloc_bytes
+Help: Number of heap bytes allocated and still in use.
+Type: GAUGE
+  go_memstats_heap_alloc_bytes: 2488816.000000
+
+Metric: go_memstats_heap_idle_bytes
+Help: Number of heap bytes waiting to be used.
+Type: GAUGE
+  go_memstats_heap_idle_bytes: 5955584.000000
+
+Metric: go_memstats_heap_inuse_bytes
+Help: Number of heap bytes that are in use.
+Type: GAUGE
+  go_memstats_heap_inuse_bytes: 4825088.000000
+
+Metric: go_memstats_heap_objects
+Help: Number of allocated objects.
+Type: GAUGE
+  go_memstats_heap_objects: 14152.000000
+
+Metric: go_memstats_heap_released_bytes
+Help: Number of heap bytes released to OS.
+Type: GAUGE
+  go_memstats_heap_released_bytes: 5652480.000000
+
+Metric: go_memstats_heap_sys_bytes
+Help: Number of heap bytes obtained from system.
+Type: GAUGE
+  go_memstats_heap_sys_bytes: 10780672.000000
+
+Metric: go_memstats_last_gc_time_seconds
+Help: Number of seconds since 1970 of last garbage collection.
+Type: GAUGE
+  go_memstats_last_gc_time_seconds: 1759880114.339075
+
+Metric: go_memstats_lookups_total
+Help: Total number of pointer lookups.
+Type: COUNTER
+  go_memstats_lookups_total: 0.000000
+
+Metric: go_memstats_mallocs_total
+Help: Total number of mallocs.
+Type: COUNTER
+  go_memstats_mallocs_total: 35922037.000000
+
+Metric: go_memstats_mcache_inuse_bytes
+Help: Number of bytes in use by mcache structures.
+Type: GAUGE
+  go_memstats_mcache_inuse_bytes: 9408.000000
+
+Metric: go_memstats_mcache_sys_bytes
+Help: Number of bytes used for mcache structures obtained from system.
+Type: GAUGE
+  go_memstats_mcache_sys_bytes: 15288.000000
+
+Metric: go_memstats_mspan_inuse_bytes
+Help: Number of bytes in use by mspan structures.
+Type: GAUGE
+  go_memstats_mspan_inuse_bytes: 149440.000000
+
+Metric: go_memstats_mspan_sys_bytes
+Help: Number of bytes used for mspan structures obtained from system.
+Type: GAUGE
+  go_memstats_mspan_sys_bytes: 212160.000000
+
+Metric: go_memstats_next_gc_bytes
+Help: Number of heap bytes when next garbage collection will take place.
+Type: GAUGE
+  go_memstats_next_gc_bytes: 4885858.000000
+
+Metric: go_memstats_other_sys_bytes
+Help: Number of bytes used for other system allocations.
+Type: GAUGE
+  go_memstats_other_sys_bytes: 1970526.000000
+
+Metric: go_memstats_stack_inuse_bytes
+Help: Number of bytes in use by the stack allocator.
+Type: GAUGE
+  go_memstats_stack_inuse_bytes: 1769472.000000
+
+Metric: go_memstats_stack_sys_bytes
+Help: Number of bytes obtained from system for stack allocator.
+Type: GAUGE
+  go_memstats_stack_sys_bytes: 1769472.000000
+
+Metric: go_memstats_sys_bytes
+Help: Number of bytes obtained from system.
+Type: GAUGE
+  go_memstats_sys_bytes: 17977344.000000
+
+Metric: go_threads
+Help: Number of OS threads created.
+Type: GAUGE
+  go_threads: 15.000000
+
+Metric: http_request_duration_seconds
+Help: HTTP request duration in seconds
+Type: HISTOGRAM
+  http_request_duration_seconds {method=GET, path=/}: 0.000686
+  http_request_duration_seconds {method=GET, path=/api/departments}: 14.225760
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept1}: 0.001007
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept2}: 0.000000
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept3}: 0.000023
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept4}: 0.000000
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept5}: 0.000031
+  http_request_duration_seconds {method=GET, path=/api/positions}: 0.000000
+  http_request_duration_seconds {method=GET, path=/favicon.ico}: 0.000000
+  http_request_duration_seconds {method=GET, path=/metrics}: 0.004917
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp1/status}: 0.000052
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp2/status}: 0.000000
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp3/status}: 0.000000
+  http_request_duration_seconds {method=PUT, path=/api/employees/emp1}: 0.000050
+
+Metric: http_requests_total
+Help: Total number of HTTP requests
+Type: COUNTER
+  http_requests_total {method=GET, path=/, status=200}: 7.000000
+  http_requests_total {method=GET, path=/api/departments, status=200}: 657722.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept1, status=200}: 6.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept2, status=200}: 3.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept3, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept4, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept5, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/positions, status=200}: 7.000000
+  http_requests_total {method=GET, path=/favicon.ico, status=404}: 1.000000
+  http_requests_total {method=GET, path=/metrics, status=200}: 3.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp1/status, status=200}: 2.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp2/status, status=200}: 1.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp3/status, status=200}: 2.000000
+  http_requests_total {method=PUT, path=/api/employees/emp1, status=200}: 1.000000
+
+Metric: process_cpu_seconds_total
+Help: Total user and system CPU time spent in seconds.
+Type: COUNTER
+  process_cpu_seconds_total: 146.578125
+
+Metric: process_max_fds
+Help: Maximum number of open file descriptors.
+Type: GAUGE
+  process_max_fds: 16777216.000000
+
+Metric: process_open_fds
+Help: Number of open file descriptors.
+Type: GAUGE
+  process_open_fds: 190.000000
+
+Metric: process_resident_memory_bytes
+Help: Resident memory size in bytes.
+Type: GAUGE
+  process_resident_memory_bytes: 20238336.000000
+
+Metric: process_start_time_seconds
+Help: Start time of the process since unix epoch in seconds.
+Type: GAUGE
+  process_start_time_seconds: 1759877833.000000
+
+Metric: process_virtual_memory_bytes
+Help: Virtual memory size in bytes.
+Type: GAUGE
+  process_virtual_memory_bytes: 23076864.000000
+
+Metric: promhttp_metric_handler_requests_in_flight
+Help: Current number of scrapes being served.
+Type: GAUGE
+  promhttp_metric_handler_requests_in_flight: 0.000000
+
+Metric: promhttp_metric_handler_requests_total
+Help: Total number of scrapes by HTTP status code.
+Type: COUNTER
+  promhttp_metric_handler_requests_total {code=200}: 3.000000
+  promhttp_metric_handler_requests_total {code=500}: 0.000000
+  promhttp_metric_handler_requests_total {code=503}: 0.000000
+
+=== END METRICS DUMP ===
+
+=== METRICS DUMP 2025-10-08T02:38:14+03:00 ===
+Metric: employees_total
+Help: Total number of employees
+Type: GAUGE
+  employees_total: 0.000000
+
+Metric: go_gc_duration_seconds
+Help: A summary of the pause duration of garbage collection cycles.
+Type: SUMMARY
+  go_gc_duration_seconds: 0.183699
+
+Metric: go_goroutines
+Help: Number of goroutines that currently exist.
+Type: GAUGE
+  go_goroutines: 7.000000
+
+Metric: go_info
+Help: Information about the Go environment.
+Type: GAUGE
+  go_info {version=go1.25.0}: 1.000000
+
+Metric: go_memstats_alloc_bytes
+Help: Number of bytes allocated and still in use.
+Type: GAUGE
+  go_memstats_alloc_bytes: 2306224.000000
+
+Metric: go_memstats_alloc_bytes_total
+Help: Total number of bytes allocated, even if freed.
+Type: COUNTER
+  go_memstats_alloc_bytes_total: 3946284640.000000
+
+Metric: go_memstats_buck_hash_sys_bytes
+Help: Number of bytes used by the profiling bucket hash table.
+Type: GAUGE
+  go_memstats_buck_hash_sys_bytes: 7674.000000
+
+Metric: go_memstats_frees_total
+Help: Total number of frees.
+Type: COUNTER
+  go_memstats_frees_total: 35915025.000000
+
+Metric: go_memstats_gc_sys_bytes
+Help: Number of bytes used for garbage collection system metadata.
+Type: GAUGE
+  go_memstats_gc_sys_bytes: 3188784.000000
+
+Metric: go_memstats_heap_alloc_bytes
+Help: Number of heap bytes allocated and still in use.
+Type: GAUGE
+  go_memstats_heap_alloc_bytes: 2306224.000000
+
+Metric: go_memstats_heap_idle_bytes
+Help: Number of heap bytes waiting to be used.
+Type: GAUGE
+  go_memstats_heap_idle_bytes: 6373376.000000
+
+Metric: go_memstats_heap_inuse_bytes
+Help: Number of heap bytes that are in use.
+Type: GAUGE
+  go_memstats_heap_inuse_bytes: 4440064.000000
+
+Metric: go_memstats_heap_objects
+Help: Number of allocated objects.
+Type: GAUGE
+  go_memstats_heap_objects: 11755.000000
+
+Metric: go_memstats_heap_released_bytes
+Help: Number of heap bytes released to OS.
+Type: GAUGE
+  go_memstats_heap_released_bytes: 5627904.000000
+
+Metric: go_memstats_heap_sys_bytes
+Help: Number of heap bytes obtained from system.
+Type: GAUGE
+  go_memstats_heap_sys_bytes: 10813440.000000
+
+Metric: go_memstats_last_gc_time_seconds
+Help: Number of seconds since 1970 of last garbage collection.
+Type: GAUGE
+  go_memstats_last_gc_time_seconds: 1759880264.345178
+
+Metric: go_memstats_lookups_total
+Help: Total number of pointer lookups.
+Type: COUNTER
+  go_memstats_lookups_total: 0.000000
+
+Metric: go_memstats_mallocs_total
+Help: Total number of mallocs.
+Type: COUNTER
+  go_memstats_mallocs_total: 35926780.000000
+
+Metric: go_memstats_mcache_inuse_bytes
+Help: Number of bytes in use by mcache structures.
+Type: GAUGE
+  go_memstats_mcache_inuse_bytes: 9408.000000
+
+Metric: go_memstats_mcache_sys_bytes
+Help: Number of bytes used for mcache structures obtained from system.
+Type: GAUGE
+  go_memstats_mcache_sys_bytes: 15288.000000
+
+Metric: go_memstats_mspan_inuse_bytes
+Help: Number of bytes in use by mspan structures.
+Type: GAUGE
+  go_memstats_mspan_inuse_bytes: 147520.000000
+
+Metric: go_memstats_mspan_sys_bytes
+Help: Number of bytes used for mspan structures obtained from system.
+Type: GAUGE
+  go_memstats_mspan_sys_bytes: 212160.000000
+
+Metric: go_memstats_next_gc_bytes
+Help: Number of heap bytes when next garbage collection will take place.
+Type: GAUGE
+  go_memstats_next_gc_bytes: 5085914.000000
+
+Metric: go_memstats_other_sys_bytes
+Help: Number of bytes used for other system allocations.
+Type: GAUGE
+  go_memstats_other_sys_bytes: 1970526.000000
+
+Metric: go_memstats_stack_inuse_bytes
+Help: Number of bytes in use by the stack allocator.
+Type: GAUGE
+  go_memstats_stack_inuse_bytes: 1769472.000000
+
+Metric: go_memstats_stack_sys_bytes
+Help: Number of bytes obtained from system for stack allocator.
+Type: GAUGE
+  go_memstats_stack_sys_bytes: 1769472.000000
+
+Metric: go_memstats_sys_bytes
+Help: Number of bytes obtained from system.
+Type: GAUGE
+  go_memstats_sys_bytes: 17977344.000000
+
+Metric: go_threads
+Help: Number of OS threads created.
+Type: GAUGE
+  go_threads: 15.000000
+
+Metric: http_request_duration_seconds
+Help: HTTP request duration in seconds
+Type: HISTOGRAM
+  http_request_duration_seconds {method=GET, path=/}: 0.000686
+  http_request_duration_seconds {method=GET, path=/api/departments}: 14.225760
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept1}: 0.001007
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept2}: 0.000000
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept3}: 0.000023
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept4}: 0.000000
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept5}: 0.000031
+  http_request_duration_seconds {method=GET, path=/api/positions}: 0.000000
+  http_request_duration_seconds {method=GET, path=/favicon.ico}: 0.000000
+  http_request_duration_seconds {method=GET, path=/metrics}: 0.004917
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp1/status}: 0.000052
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp2/status}: 0.000000
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp3/status}: 0.000000
+  http_request_duration_seconds {method=PUT, path=/api/employees/emp1}: 0.000050
+
+Metric: http_requests_total
+Help: Total number of HTTP requests
+Type: COUNTER
+  http_requests_total {method=GET, path=/, status=200}: 7.000000
+  http_requests_total {method=GET, path=/api/departments, status=200}: 657722.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept1, status=200}: 6.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept2, status=200}: 3.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept3, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept4, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept5, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/positions, status=200}: 7.000000
+  http_requests_total {method=GET, path=/favicon.ico, status=404}: 1.000000
+  http_requests_total {method=GET, path=/metrics, status=200}: 3.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp1/status, status=200}: 2.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp2/status, status=200}: 1.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp3/status, status=200}: 2.000000
+  http_requests_total {method=PUT, path=/api/employees/emp1, status=200}: 1.000000
+
+Metric: process_cpu_seconds_total
+Help: Total user and system CPU time spent in seconds.
+Type: COUNTER
+  process_cpu_seconds_total: 146.593750
+
+Metric: process_max_fds
+Help: Maximum number of open file descriptors.
+Type: GAUGE
+  process_max_fds: 16777216.000000
+
+Metric: process_open_fds
+Help: Number of open file descriptors.
+Type: GAUGE
+  process_open_fds: 190.000000
+
+Metric: process_resident_memory_bytes
+Help: Resident memory size in bytes.
+Type: GAUGE
+  process_resident_memory_bytes: 20254720.000000
+
+Metric: process_start_time_seconds
+Help: Start time of the process since unix epoch in seconds.
+Type: GAUGE
+  process_start_time_seconds: 1759877833.000000
+
+Metric: process_virtual_memory_bytes
+Help: Virtual memory size in bytes.
+Type: GAUGE
+  process_virtual_memory_bytes: 23150592.000000
+
+Metric: promhttp_metric_handler_requests_in_flight
+Help: Current number of scrapes being served.
+Type: GAUGE
+  promhttp_metric_handler_requests_in_flight: 0.000000
+
+Metric: promhttp_metric_handler_requests_total
+Help: Total number of scrapes by HTTP status code.
+Type: COUNTER
+  promhttp_metric_handler_requests_total {code=200}: 3.000000
+  promhttp_metric_handler_requests_total {code=500}: 0.000000
+  promhttp_metric_handler_requests_total {code=503}: 0.000000
+
+=== END METRICS DUMP ===
+
+=== METRICS DUMP 2025-10-08T02:38:44+03:00 ===
+Metric: employees_total
+Help: Total number of employees
+Type: GAUGE
+  employees_total: 0.000000
+
+Metric: go_gc_duration_seconds
+Help: A summary of the pause duration of garbage collection cycles.
+Type: SUMMARY
+  go_gc_duration_seconds: 0.183699
+
+Metric: go_goroutines
+Help: Number of goroutines that currently exist.
+Type: GAUGE
+  go_goroutines: 7.000000
+
+Metric: go_info
+Help: Information about the Go environment.
+Type: GAUGE
+  go_info {version=go1.25.0}: 1.000000
+
+Metric: go_memstats_alloc_bytes
+Help: Number of bytes allocated and still in use.
+Type: GAUGE
+  go_memstats_alloc_bytes: 2347872.000000
+
+Metric: go_memstats_alloc_bytes_total
+Help: Total number of bytes allocated, even if freed.
+Type: COUNTER
+  go_memstats_alloc_bytes_total: 3946326288.000000
+
+Metric: go_memstats_buck_hash_sys_bytes
+Help: Number of bytes used by the profiling bucket hash table.
+Type: GAUGE
+  go_memstats_buck_hash_sys_bytes: 7674.000000
+
+Metric: go_memstats_frees_total
+Help: Total number of frees.
+Type: COUNTER
+  go_memstats_frees_total: 35915025.000000
+
+Metric: go_memstats_gc_sys_bytes
+Help: Number of bytes used for garbage collection system metadata.
+Type: GAUGE
+  go_memstats_gc_sys_bytes: 3188784.000000
+
+Metric: go_memstats_heap_alloc_bytes
+Help: Number of heap bytes allocated and still in use.
+Type: GAUGE
+  go_memstats_heap_alloc_bytes: 2347872.000000
+
+Metric: go_memstats_heap_idle_bytes
+Help: Number of heap bytes waiting to be used.
+Type: GAUGE
+  go_memstats_heap_idle_bytes: 6316032.000000
+
+Metric: go_memstats_heap_inuse_bytes
+Help: Number of heap bytes that are in use.
+Type: GAUGE
+  go_memstats_heap_inuse_bytes: 4497408.000000
+
+Metric: go_memstats_heap_objects
+Help: Number of allocated objects.
+Type: GAUGE
+  go_memstats_heap_objects: 12355.000000
+
+Metric: go_memstats_heap_released_bytes
+Help: Number of heap bytes released to OS.
+Type: GAUGE
+  go_memstats_heap_released_bytes: 5627904.000000
+
+Metric: go_memstats_heap_sys_bytes
+Help: Number of heap bytes obtained from system.
+Type: GAUGE
+  go_memstats_heap_sys_bytes: 10813440.000000
+
+Metric: go_memstats_last_gc_time_seconds
+Help: Number of seconds since 1970 of last garbage collection.
+Type: GAUGE
+  go_memstats_last_gc_time_seconds: 1759880264.345178
+
+Metric: go_memstats_lookups_total
+Help: Total number of pointer lookups.
+Type: COUNTER
+  go_memstats_lookups_total: 0.000000
+
+Metric: go_memstats_mallocs_total
+Help: Total number of mallocs.
+Type: COUNTER
+  go_memstats_mallocs_total: 35927380.000000
+
+Metric: go_memstats_mcache_inuse_bytes
+Help: Number of bytes in use by mcache structures.
+Type: GAUGE
+  go_memstats_mcache_inuse_bytes: 9408.000000
+
+Metric: go_memstats_mcache_sys_bytes
+Help: Number of bytes used for mcache structures obtained from system.
+Type: GAUGE
+  go_memstats_mcache_sys_bytes: 15288.000000
+
+Metric: go_memstats_mspan_inuse_bytes
+Help: Number of bytes in use by mspan structures.
+Type: GAUGE
+  go_memstats_mspan_inuse_bytes: 147520.000000
+
+Metric: go_memstats_mspan_sys_bytes
+Help: Number of bytes used for mspan structures obtained from system.
+Type: GAUGE
+  go_memstats_mspan_sys_bytes: 212160.000000
+
+Metric: go_memstats_next_gc_bytes
+Help: Number of heap bytes when next garbage collection will take place.
+Type: GAUGE
+  go_memstats_next_gc_bytes: 5085914.000000
+
+Metric: go_memstats_other_sys_bytes
+Help: Number of bytes used for other system allocations.
+Type: GAUGE
+  go_memstats_other_sys_bytes: 1970526.000000
+
+Metric: go_memstats_stack_inuse_bytes
+Help: Number of bytes in use by the stack allocator.
+Type: GAUGE
+  go_memstats_stack_inuse_bytes: 1769472.000000
+
+Metric: go_memstats_stack_sys_bytes
+Help: Number of bytes obtained from system for stack allocator.
+Type: GAUGE
+  go_memstats_stack_sys_bytes: 1769472.000000
+
+Metric: go_memstats_sys_bytes
+Help: Number of bytes obtained from system.
+Type: GAUGE
+  go_memstats_sys_bytes: 17977344.000000
+
+Metric: go_threads
+Help: Number of OS threads created.
+Type: GAUGE
+  go_threads: 15.000000
+
+Metric: http_request_duration_seconds
+Help: HTTP request duration in seconds
+Type: HISTOGRAM
+  http_request_duration_seconds {method=GET, path=/}: 0.000686
+  http_request_duration_seconds {method=GET, path=/api/departments}: 14.225760
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept1}: 0.001007
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept2}: 0.000000
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept3}: 0.000023
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept4}: 0.000000
+  http_request_duration_seconds {method=GET, path=/api/employees/department/dept5}: 0.000031
+  http_request_duration_seconds {method=GET, path=/api/positions}: 0.000000
+  http_request_duration_seconds {method=GET, path=/favicon.ico}: 0.000000
+  http_request_duration_seconds {method=GET, path=/metrics}: 0.004917
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp1/status}: 0.000052
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp2/status}: 0.000000
+  http_request_duration_seconds {method=PATCH, path=/api/employees/emp3/status}: 0.000000
+  http_request_duration_seconds {method=PUT, path=/api/employees/emp1}: 0.000050
+
+Metric: http_requests_total
+Help: Total number of HTTP requests
+Type: COUNTER
+  http_requests_total {method=GET, path=/, status=200}: 7.000000
+  http_requests_total {method=GET, path=/api/departments, status=200}: 657722.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept1, status=200}: 6.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept2, status=200}: 3.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept3, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept4, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/employees/department/dept5, status=200}: 2.000000
+  http_requests_total {method=GET, path=/api/positions, status=200}: 7.000000
+  http_requests_total {method=GET, path=/favicon.ico, status=404}: 1.000000
+  http_requests_total {method=GET, path=/metrics, status=200}: 3.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp1/status, status=200}: 2.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp2/status, status=200}: 1.000000
+  http_requests_total {method=PATCH, path=/api/employees/emp3/status, status=200}: 2.000000
+  http_requests_total {method=PUT, path=/api/employees/emp1, status=200}: 1.000000
+
+Metric: process_cpu_seconds_total
+Help: Total user and system CPU time spent in seconds.
+Type: COUNTER
+  process_cpu_seconds_total: 146.609375
+
+Metric: process_max_fds
+Help: Maximum number of open file descriptors.
+Type: GAUGE
+  process_max_fds: 16777216.000000
+
+Metric: process_open_fds
+Help: Number of open file descriptors.
+Type: GAUGE
+  process_open_fds: 190.000000
+
+Metric: process_resident_memory_bytes
+Help: Resident memory size in bytes.
+Type: GAUGE
+  process_resident_memory_bytes: 20267008.000000
+
+Metric: process_start_time_seconds
+Help: Start time of the process since unix epoch in seconds.
+Type: GAUGE
+  process_start_time_seconds: 1759877833.000000
+
+Metric: process_virtual_memory_bytes
+Help: Virtual memory size in bytes.
+Type: GAUGE
+  process_virtual_memory_bytes: 23150592.000000
+
+Metric: promhttp_metric_handler_requests_in_flight
+Help: Current number of scrapes being served.
+Type: GAUGE
+  promhttp_metric_handler_requests_in_flight: 0.000000
+
+Metric: promhttp_metric_handler_requests_total
+Help: Total number of scrapes by HTTP status code.
+Type: COUNTER
+  promhttp_metric_handler_requests_total {code=200}: 3.000000
+  promhttp_metric_handler_requests_total {code=500}: 0.000000
+  promhttp_metric_handler_requests_total {code=503}: 0.000000
+
+=== END METRICS DUMP ===
+
