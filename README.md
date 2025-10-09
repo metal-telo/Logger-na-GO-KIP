@@ -388,7 +388,7 @@ process_virtual_memory_bytes 2.3957504e+07
 ## TYPE promhttp_metric_handler_requests_in_flight gauge
 promhttp_metric_handler_requests_in_flight 1
 ## HELP promhttp_metric_handler_requests_total Total number of scrapes by HTTP status code.
-# TYPE promhttp_metric_handler_requests_total counter
+## TYPE promhttp_metric_handler_requests_total counter
 promhttp_metric_handler_requests_total{code="200"} 2
 promhttp_metric_handler_requests_total{code="500"} 0
 promhttp_metric_handler_requests_total{code="503"} 0
