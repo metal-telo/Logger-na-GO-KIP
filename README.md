@@ -171,7 +171,7 @@ Benchmarking http://localhost:8080/api/departments for 1m0s using 10 connection(
  | 70.759ms      | 23  | 0.01%|
  | 85.423ms     |   4 |  0.00%|
   |373.384ms    |  10  | 0.00%|
-```
+
 http://localhost:8080/metrics
 # METRICS
 ## HELP employees_total Total number of employees
@@ -369,4 +369,4 @@ promhttp_metric_handler_requests_in_flight 1
 promhttp_metric_handler_requests_total{code="200"} 2
 promhttp_metric_handler_requests_total{code="500"} 0
 promhttp_metric_handler_requests_total{code="503"} 0
-```
+
