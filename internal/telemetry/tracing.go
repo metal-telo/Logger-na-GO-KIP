@@ -8,6 +8,7 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
 )
 
+// InitTracer initializes OpenTelemetry tracer with Jaeger exporter
 func InitTracer(jaegerURL, serviceName string) (*sdktrace.TracerProvider, error) {
 	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(jaegerURL)))
 	if err != nil {
@@ -25,3 +26,4 @@ func InitTracer(jaegerURL, serviceName string) (*sdktrace.TracerProvider, error)
 	otel.SetTracerProvider(tp)
 	return tp, nil
 }
+

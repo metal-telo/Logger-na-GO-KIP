@@ -5,64 +5,60 @@ import (
 	"fmt"
 	"log/slog"
 
-	"employee-management-system/internal/domain"
+	"employee-management/internal/models"
+	"employee-management/internal/repository"
 )
 
+// EmployeeService handles business logic for employees
 type EmployeeService struct {
-	repo domain.Repository
+	repo repository.Repository
 }
 
-func NewEmployeeService(repo domain.Repository) *EmployeeService {
+// NewEmployeeService creates a new employee service
+func NewEmployeeService(repo repository.Repository) *EmployeeService {
 	return &EmployeeService{repo: repo}
 }
 
-func (s *EmployeeService) GetDepartments(ctx context.Context) ([]domain.Department, error) {
+func (s *EmployeeService) GetDepartments(ctx context.Context) ([]models.Department, error) {
 	slog.DebugContext(ctx, "getting departments")
 	return s.repo.GetDepartments(ctx)
 }
 
-func (s *EmployeeService) GetEmployeesByDepartment(ctx context.Context, departmentID string) ([]domain.Employee, error) {
+func (s *EmployeeService) GetEmployeesByDepartment(ctx context.Context, departmentID string) ([]models.Employee, error) {
 	slog.DebugContext(ctx, "getting employees by department", "department_id", departmentID)
 	return s.repo.GetEmployeesByDepartment(ctx, departmentID)
 }
 
-func (s *EmployeeService) SearchEmployees(ctx context.Context, req domain.EmployeeSearchRequest) ([]domain.Employee, error) {
+func (s *EmployeeService) SearchEmployees(ctx context.Context, req models.EmployeeSearchRequest) ([]models.Employee, error) {
 	slog.DebugContext(ctx, "searching employees", "filters", req)
 	return s.repo.SearchEmployees(ctx, req)
 }
 
-func (s *EmployeeService) CreateEmployee(ctx context.Context, emp domain.Employee) (*domain.Employee, error) {
+func (s *EmployeeService) CreateEmployee(ctx context.Context, emp models.Employee) (*models.Employee, error) {
 	slog.DebugContext(ctx, "creating employee", "employee", emp.FullName)
-	
 	if err := s.validateEmployee(emp); err != nil {
 		return nil, err
 	}
-
 	return s.repo.CreateEmployee(ctx, emp)
 }
 
-func (s *EmployeeService) UpdateEmployee(ctx context.Context, emp domain.Employee) (*domain.Employee, error) {
+func (s *EmployeeService) UpdateEmployee(ctx context.Context, emp models.Employee) (*models.Employee, error) {
 	slog.DebugContext(ctx, "updating employee", "employee_id", emp.ID)
-	
 	if emp.ID == "" {
 		return nil, fmt.Errorf("ID сотрудника обязателен")
 	}
-
 	if err := s.validateEmployee(emp); err != nil {
 		return nil, err
 	}
-
 	return s.repo.UpdateEmployee(ctx, emp)
 }
 
-func (s *EmployeeService) UpdateEmployeeStatus(ctx context.Context, id string, status string) (*domain.Employee, error) {
+func (s *EmployeeService) UpdateEmployeeStatus(ctx context.Context, id string, status string) (*models.Employee, error) {
 	slog.DebugContext(ctx, "updating employee status", "employee_id", id, "status", status)
-	
 	validStatuses := map[string]bool{"active": true, "vacation": true, "fired": true}
 	if !validStatuses[status] {
 		return nil, fmt.Errorf("неверный статус: %s", status)
 	}
-
 	return s.repo.UpdateEmployeeStatus(ctx, id, status)
 }
 
@@ -75,7 +71,7 @@ func (s *EmployeeService) GetEmployeeStats(ctx context.Context) (map[string]inte
 	return s.repo.GetEmployeeStats(ctx)
 }
 
-func (s *EmployeeService) validateEmployee(emp domain.Employee) error {
+func (s *EmployeeService) validateEmployee(emp models.Employee) error {
 	if emp.FullName == "" {
 		return fmt.Errorf("ФИО обязательно")
 	}
@@ -110,3 +106,4 @@ func (s *EmployeeService) validateEmployee(emp domain.Employee) error {
 
 	return nil
 }
+

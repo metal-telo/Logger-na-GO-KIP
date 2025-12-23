@@ -1,7 +1,8 @@
-package domain
+package models
 
 import "time"
 
+// Department represents a department in the organization
 type Department struct {
 	ID          string    `json:"id"`
 	Name        string    `json:"name"`
@@ -9,6 +10,7 @@ type Department struct {
 	CreatedAt   time.Time `json:"created_at"`
 }
 
+// Employee represents an employee
 type Employee struct {
 	ID           string     `json:"id"`
 	FullName     string     `json:"full_name"`
@@ -24,6 +26,7 @@ type Employee struct {
 	FiredAt      *time.Time `json:"fired_at,omitempty"`
 }
 
+// EmployeeSearchRequest represents search filters for employees
 type EmployeeSearchRequest struct {
 	FullName  string `json:"full_name"`
 	Position  string `json:"position"`
@@ -33,6 +36,16 @@ type EmployeeSearchRequest struct {
 	AgeTo     *int   `json:"age_to,omitempty"`
 }
 
+// StatusUpdateRequest represents a status update request
 type StatusUpdateRequest struct {
 	Status string `json:"status"`
 }
+
+// APIResponse represents a standard API response
+type APIResponse struct {
+	Success bool        `json:"success"`
+	Data    interface{} `json:"data,omitempty"`
+	Error   string      `json:"error,omitempty"`
+	Message string      `json:"message,omitempty"`
+}
+

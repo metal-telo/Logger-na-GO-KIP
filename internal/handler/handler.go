@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"time"
 
-	"employee-management-system/internal/domain"
-	"employee-management-system/internal/service"
-	"employee-management-system/internal/telemetry"
+	"employee-management/internal/models"
+	"employee-management/internal/service"
+	"employee-management/internal/telemetry"
 
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -19,62 +19,25 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-//go:embed ../../static/*
-var staticFiles embed.FS
-
-type APIResponse struct {
-	Success bool        `json:"success"`
-	Data    interface{} `json:"data,omitempty"`
-	Error   string      `json:"error,omitempty"`
-	Message string      `json:"message,omitempty"`
-}
-
+// Handler handles HTTP requests
 type Handler struct {
-	service *service.EmployeeService
-	tracer  trace.Tracer
-	server  *http.Server
+	service     *service.EmployeeService
+	tracer      trace.Tracer
+	staticFiles embed.FS
 }
 
-func NewHandler(service *service.EmployeeService) *Handler {
+// NewHandler creates a new HTTP handler
+func NewHandler(svc *service.EmployeeService, staticFiles embed.FS) *Handler {
 	return &Handler{
-		service: service,
-		tracer:  otel.Tracer("employee-handler"),
+		service:     svc,
+		tracer:      otel.Tracer("employee-handler"),
+		staticFiles: staticFiles,
 	}
 }
 
-func (h *Handler) StartServer(addr string) *http.Server {
-	router := h.InitRoutes()
-
-	server := &http.Server{
-		Addr:         addr,
-		Handler:      router,
-		ReadTimeout:  15 * time.Second,
-		WriteTimeout: 15 * time.Second,
-		IdleTimeout:  60 * time.Second,
-	}
-
-	go func() {
-		slog.Info("Запуск сервера", "port", addr)
-		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			slog.Error("Ошибка запуска сервера", "error", err)
-		}
-	}()
-
-	h.server = server
-	return server
-}
-
-func (h *Handler) Shutdown() {
-	if h.server != nil {
-		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-		defer cancel()
-		h.server.Shutdown(ctx)
-	}
-}
-
+// InitRoutes initializes all HTTP routes
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
-
 	router.Use(h.loggingMiddleware())
 	router.Use(h.tracingMiddleware())
 	router.Use(gin.Recovery())
@@ -93,11 +56,10 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	}
 
 	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
-
-	router.StaticFS("/static", http.FS(staticFiles))
+	router.StaticFS("/static", http.FS(h.staticFiles))
 
 	router.GET("/", func(c *gin.Context) {
-		data, err := staticFiles.ReadFile("static/index.html")
+		data, err := h.staticFiles.ReadFile("static/index.html")
 		if err != nil {
 			c.String(http.StatusInternalServerError, "Ошибка загрузки страницы")
 			return
@@ -168,7 +130,6 @@ func (h *Handler) getDepartments(c *gin.Context) {
 func (h *Handler) getEmployeesByDepartment(c *gin.Context) {
 	ctx := c.Request.Context()
 	departmentID := c.Param("departmentId")
-	
 	employees, err := h.service.GetEmployeesByDepartment(ctx, departmentID)
 	if err != nil {
 		h.sendError(c, http.StatusInternalServerError, "Ошибка получения сотрудников: "+err.Error())
@@ -179,7 +140,7 @@ func (h *Handler) getEmployeesByDepartment(c *gin.Context) {
 
 func (h *Handler) searchEmployees(c *gin.Context) {
 	ctx := c.Request.Context()
-	var req domain.EmployeeSearchRequest
+	var req models.EmployeeSearchRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.sendError(c, http.StatusBadRequest, "Неверный формат запроса: "+err.Error())
 		return
@@ -195,7 +156,7 @@ func (h *Handler) searchEmployees(c *gin.Context) {
 
 func (h *Handler) createEmployee(c *gin.Context) {
 	ctx := c.Request.Context()
-	var emp domain.Employee
+	var emp models.Employee
 	if err := c.ShouldBindJSON(&emp); err != nil {
 		h.sendError(c, http.StatusBadRequest, "Неверный формат данных: "+err.Error())
 		return
@@ -210,15 +171,13 @@ func (h *Handler) createEmployee(c *gin.Context) {
 		h.sendError(c, status, "Ошибка создания сотрудника: "+err.Error())
 		return
 	}
-
 	h.sendSuccessWithMessage(c, createdEmp, "Сотрудник успешно создан")
 }
 
 func (h *Handler) updateEmployee(c *gin.Context) {
 	ctx := c.Request.Context()
 	id := c.Param("id")
-	
-	var emp domain.Employee
+	var emp models.Employee
 	if err := c.ShouldBindJSON(&emp); err != nil {
 		h.sendError(c, http.StatusBadRequest, "Неверный формат данных: "+err.Error())
 		return
@@ -230,15 +189,13 @@ func (h *Handler) updateEmployee(c *gin.Context) {
 		h.sendError(c, http.StatusInternalServerError, "Ошибка обновления сотрудника: "+err.Error())
 		return
 	}
-
 	h.sendSuccessWithMessage(c, updatedEmp, "Данные сотрудника обновлены")
 }
 
 func (h *Handler) updateEmployeeStatus(c *gin.Context) {
 	ctx := c.Request.Context()
 	id := c.Param("id")
-	
-	var req domain.StatusUpdateRequest
+	var req models.StatusUpdateRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.sendError(c, http.StatusBadRequest, "Неверный формат данных: "+err.Error())
 		return
@@ -280,9 +237,7 @@ func (h *Handler) getMetrics(c *gin.Context) {
 		h.sendError(c, http.StatusInternalServerError, "Ошибка получения метрик: "+err.Error())
 		return
 	}
-
 	telemetry.UpdateEmployeeMetrics(stats)
-
 	h.sendSuccess(c, map[string]interface{}{
 		"timestamp": time.Now(),
 		"stats":     stats,
@@ -299,14 +254,14 @@ func (h *Handler) healthCheck(c *gin.Context) {
 }
 
 func (h *Handler) sendSuccess(c *gin.Context, data interface{}) {
-	c.JSON(http.StatusOK, APIResponse{
+	c.JSON(http.StatusOK, models.APIResponse{
 		Success: true,
 		Data:    data,
 	})
 }
 
 func (h *Handler) sendSuccessWithMessage(c *gin.Context, data interface{}, message string) {
-	c.JSON(http.StatusOK, APIResponse{
+	c.JSON(http.StatusOK, models.APIResponse{
 		Success: true,
 		Data:    data,
 		Message: message,
@@ -314,14 +269,14 @@ func (h *Handler) sendSuccessWithMessage(c *gin.Context, data interface{}, messa
 }
 
 func (h *Handler) sendError(c *gin.Context, status int, message string) {
-	slog.Error("API error", 
-		"status", status, 
+	slog.Error("API error",
+		"status", status,
 		"message", message,
 		"path", c.Request.URL.Path,
 	)
-
-	c.JSON(status, APIResponse{
+	c.JSON(status, models.APIResponse{
 		Success: false,
 		Error:   message,
 	})
 }
+
