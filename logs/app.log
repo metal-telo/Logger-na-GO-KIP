@@ -1,0 +1,24 @@
+{"time":"2025-10-08T02:20:15.8205877+03:00","level":"INFO","msg":"Логгер инициализирован","log_file":"logs/app.log"}
+{"time":"2025-10-08T02:20:15.8460679+03:00","level":"INFO","msg":"Запись метрик в файл инициализирована","metrics_file":"metrics/metrics.log"}
+{"time":"2025-10-08T02:20:15.8460679+03:00","level":"INFO","msg":"Трассировка отключена - Jaeger не запущен"}
+{"time":"2025-10-08T02:20:15.8481023+03:00","level":"INFO","msg":"Запуск сервера","port":"8080"}
+{"time":"2025-10-08T02:20:15.8481023+03:00","level":"ERROR","msg":"Ошибка запуска сервера","error":"listen tcp :8080: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"time":"2025-10-08T02:21:27.0920088+03:00","level":"INFO","msg":"Логгер инициализирован","log_file":"logs/app.log"}
+{"time":"2025-10-08T02:21:27.1171321+03:00","level":"INFO","msg":"Запись метрик в файл инициализирована","metrics_file":"metrics/metrics.log"}
+{"time":"2025-10-08T02:21:27.1172201+03:00","level":"INFO","msg":"Трассировка отключена - Jaeger не запущен"}
+{"time":"2025-10-08T02:21:27.119142+03:00","level":"INFO","msg":"Запуск сервера","port":"8080"}
+{"time":"2025-10-08T02:21:27.120132+03:00","level":"ERROR","msg":"Ошибка запуска сервера","error":"listen tcp :8080: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"time":"2025-10-08T02:22:14.3712293+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/employees/department/dept3","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-08T02:22:16.8292608+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/employees/department/dept4","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-08T02:22:19.4831373+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/","status":200,"duration":"47.4µs","client_ip":"::1"}
+{"time":"2025-10-08T02:22:19.561775+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/departments","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-08T02:22:19.5697221+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/positions","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-08T02:22:22.2892342+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/employees/department/dept1","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-08T02:22:27.6163644+03:00","level":"INFO","msg":"HTTP request","method":"PATCH","path":"/api/employees/emp1/status","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-08T02:22:27.6361443+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/employees/department/dept1","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-08T02:22:31.9554001+03:00","level":"INFO","msg":"HTTP request","method":"PATCH","path":"/api/employees/emp1/status","status":200,"duration":"52.3µs","client_ip":"::1"}
+{"time":"2025-10-08T02:22:31.9740588+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/employees/department/dept1","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-08T02:22:35.9147469+03:00","level":"INFO","msg":"HTTP request","method":"PATCH","path":"/api/employees/emp2/status","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-08T02:22:35.932661+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/employees/department/dept1","status":200,"duration":"0s","client_ip":"::1"}
+{"time":"2025-10-08T02:22:51.3980207+03:00","level":"INFO","msg":"HTTP request","method":"PUT","path":"/api/employees/emp1","status":200,"duration":"50.4µs","client_ip":"::1"}
+{"time":"2025-10-08T02:22:51.4025942+03:00","level":"INFO","msg":"HTTP request","method":"GET","path":"/api/employees/department/dept1","status":200,"duration":"0s","client_ip":"::1"}

@@ -1,4 +1,4 @@
-module employee-management-system
+module employee-management
 
 go 1.21
 
