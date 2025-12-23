@@ -6,7 +6,7 @@
 Согласно требованиям, структура была изменена исходя из стандарта https://github.com/golang-standards/project-layout/blob/master/README_ru.md
 
 Итоговая структура выглядит так:
-
+```
 employee-management/
 ├── cmd/
 │   └── server/
@@ -36,3 +36,4 @@ employee-management/
 ├── go.mod                       # Зависимости Go
 ├── go.sum                       # Чексуммы зависимостей
 └── README.md                    # Документация
+```
