@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 	"time"
 
@@ -62,7 +63,16 @@ func run() error {
 	// Initialize dependencies
 	repo := repository.NewMemoryRepository()
 	svc := service.NewEmployeeService(repo)
-	h := handler.NewHandler(svc, staticFiles)
+	
+	// Определяем путь к фронтенду
+	frontendDir := ""
+	if os.Getenv("APP_ENV") == "development" {
+		// В режиме разработки используем собранные файлы из frontend/dist
+		// или можно указать путь к папке фронтенда
+		frontendDir = "../../frontend/dist"  // путь относительно cmd/server
+	}
+	
+	h := handler.NewHandler(svc, staticFiles, frontendDir)
 
 	// Create server
 	server := &http.Server{
@@ -100,4 +110,3 @@ func run() error {
 	slog.Info("Сервер остановлен")
 	return nil
 }
-

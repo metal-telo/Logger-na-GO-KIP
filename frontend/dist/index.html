@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Система управления сотрудниками</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div class="container">
+        <h1>Система управления сотрудниками</h1>
+        <div v-if="error" class="error">{{ error }}</div>
+        <div v-if="success" class="success">{{ success }}</div>
+
+        <div class="tabs">
+          <button
+            class="tab"
+            :class="{ active: activeTab === 'list' }"
+            @click="setActiveTab('list')"
+          >
+            Список сотрудников
+          </button>
+          <button
+            class="tab"
+            :class="{ active: activeTab === 'create' }"
+            @click="setActiveTab('create')"
+          >
+            Добавить сотрудника
+          </button>
+          <button
+            class="tab"
+            :class="{ active: activeTab === 'search' }"
+            @click="setActiveTab('search')"
+          >
+            Поиск сотрудников
+          </button>
+        </div>
+
+        <!-- Выбор департамента -->
+        <div class="department-selector" v-if="activeTab !== 'search'">
+          <label>Департамент:</label>
+          <select
+            v-model="selectedDepartmentId"
+            @change="loadEmployees"
+            :disabled="loading"
+          >
+            <option value="">Выберите департамент</option>
+            <option v-for="dept in departments" :key="dept.id" :value="dept.id">
+              {{ dept.name }}
+            </option>
+          </select>
+          <span v-if="selectedDepartment && employees.length">
+            Сотрудников: <strong>{{ activeEmployees.length }}</strong>
+          </span>
+        </div>
+
+        <!-- Список сотрудников -->
+        <div v-if="activeTab === 'list'">
+          <div v-if="loading" class="loading">Загрузка сотрудников...</div>
+          <div v-else-if="!selectedDepartmentId" class="empty-state">
+            <h3>Выберите департамент</h3>
+            <p>
+              Для просмотра списка сотрудников необходимо выбрать департамент
+            </p>
+          </div>
+          <div v-else-if="employees.length === 0" class="empty-state">
+            <h3>Сотрудники не найдены</h3>
+            <p>В выбранном департаменте пока нет сотрудников</p>
+          </div>
+          <div v-else class="employee-list">
+            <div
+              v-for="employee in employees"
+              :key="employee.id"
+              class="employee-card"
+              :class="{ fired: employee.status === 'fired' }"
+            >
+              <div class="employee-header">
+                <div class="employee-name">{{ employee.full_name }}</div>
+                <div
+                  class="employee-status"
+                  :class="`status-${employee.status}`"
+                >
+                  {{ getStatusText(employee.status) }}
+                </div>
+              </div>
+              <div class="employee-info">
+                <div class="info-item">
+                  <div class="info-label">Должность</div>
+                  <div class="info-value">{{ employee.position }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Пол / Возраст</div>
+                  <div class="info-value">
+                    {{ employee.gender === 'male' ? 'М' : 'Ж' }} / {{
+                    employee.age }} лет
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Образование</div>
+                  <div class="info-value">
+                    {{ getEducationText(employee.education) }}
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Паспорт</div>
+                  <div class="info-value">{{ employee.passport }}</div>
+                </div>
+              </div>
+              <div class="employee-actions">
+                <button
+                  class="btn btn-primary"
+                  @click="editEmployee(employee)"
+                  v-if="employee.status !== 'fired'"
+                  :disabled="loading"
+                >
+                  Редактировать
+                </button>
+                <button
+                  class="btn btn-success"
+                  @click="changeStatus(employee.id, 'vacation')"
+                  v-if="employee.status === 'active'"
+                  :disabled="loading"
+                >
+                  В отпуск
+                </button>
+                <button
+                  class="btn btn-success"
+                  @click="changeStatus(employee.id, 'active')"
+                  v-if="employee.status === 'vacation'"
+                  :disabled="loading"
+                >
+                  Вернуть
+                </button>
+                <button
+                  class="btn btn-danger"
+                  @click="fireEmployee(employee)"
+                  v-if="employee.status !== 'fired'"
+                  :disabled="loading"
+                >
+                  Уволить
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Создание сотрудника -->
+        <div v-if="activeTab === 'create'">
+          <div v-if="!selectedDepartmentId" class="empty-state">
+            <h3>Выберите департамент</h3>
+            <p>Для создания сотрудника необходимо выбрать департамент</p>
+          </div>
+          <form v-else @submit.prevent="createEmployee">
+            <div class="form-row">
+              <div class="form-group">
+                <label>ФИО *</label>
+                <input
+                  type="text"
+                  v-model="newEmployee.fullName"
+                  required
+                  placeholder="Иванов Иван Иванович"
+                  :disabled="loading"
+                />
+              </div>
+              <div class="form-group">
+                <label>Пол *</label>
+                <select
+                  v-model="newEmployee.gender"
+                  required
+                  :disabled="loading"
+                >
+                  <option value="">Выберите пол</option>
+                  <option value="male">Мужской</option>
+                  <option value="female">Женский</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Возраст *</label>
+                <input
+                  type="number"
+                  v-model.number="newEmployee.age"
+                  required
+                  min="18"
+                  max="70"
+                  placeholder="30"
+                  :disabled="loading"
+                />
+              </div>
+              <div class="form-group">
+                <label>Образование *</label>
+                <select
+                  v-model="newEmployee.education"
+                  required
+                  :disabled="loading"
+                >
+                  <option value="">Выберите образование</option>
+                  <option value="secondary">Среднее</option>
+                  <option value="specialized">Средне-специальное</option>
+                  <option value="higher">Высшее</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Должность *</label>
+              <select
+                v-model="newEmployee.position"
+                required
+                :disabled="loading"
+              >
+                <option value="">Выберите должность</option>
+                <option
+                  v-for="position in positions"
+                  :key="position"
+                  :value="position"
+                >
+                  {{ position }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Паспортные данные *</label>
+              <input
+                type="text"
+                v-model="newEmployee.passport"
+                required
+                placeholder="1234 567890"
+                pattern="\d{4} \d{6}"
+                title="Формат: 1234 567890"
+                :disabled="loading"
+              />
+            </div>
+
+            <button type="submit" class="btn btn-success" :disabled="loading">
+              {{ loading ? 'Создание...' : 'Создать сотрудника' }}
+            </button>
+          </form>
+        </div>
+
+        <!-- Поиск сотрудников -->
+        <div v-if="activeTab === 'search'">
+          <div class="search-filters">
+            <h3 style="margin-bottom: 20px">Фильтры поиска</h3>
+            <div class="filters-row">
+              <div class="form-group">
+                <label>ФИО</label>
+                <input
+                  type="text"
+                  v-model="searchFilters.fullName"
+                  placeholder="Введите ФИО"
+                  :disabled="loading"
+                />
+              </div>
+              <div class="form-group">
+                <label>Должность</label>
+                <select v-model="searchFilters.position" :disabled="loading">
+                  <option value="">Все должности</option>
+                  <option
+                    v-for="position in positions"
+                    :key="position"
+                    :value="position"
+                  >
+                    {{ position }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Пол</label>
+                <select v-model="searchFilters.gender" :disabled="loading">
+                  <option value="">Любой</option>
+                  <option value="male">Мужской</option>
+                  <option value="female">Женский</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Образование</label>
+                <select v-model="searchFilters.education" :disabled="loading">
+                  <option value="">Любое</option>
+                  <option value="secondary">Среднее</option>
+                  <option value="specialized">Средне-специальное</option>
+                  <option value="higher">Высшее</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Возраст от</label>
+                <input
+                  type="number"
+                  v-model.number="searchFilters.ageFrom"
+                  min="18"
+                  max="70"
+                  placeholder="18"
+                  :disabled="loading"
+                />
+              </div>
+              <div class="form-group">
+                <label>Возраст до</label>
+                <input
+                  type="number"
+                  v-model.number="searchFilters.ageTo"
+                  min="18"
+                  max="70"
+                  placeholder="70"
+                  :disabled="loading"
+                />
+              </div>
+              <div class="form-group">
+                <button
+                  class="btn btn-primary"
+                  @click="searchEmployees"
+                  :disabled="loading"
+                  style="width: 100%"
+                >
+                  {{ loading ? 'Поиск...' : 'Поиск' }}
+                </button>
+              </div>
+              <div class="form-group">
+                <button
+                  class="btn btn-secondary"
+                  @click="clearFilters"
+                  :disabled="loading"
+                  style="width: 100%"
+                >
+                  Очистить
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div v-if="loading" class="loading">Поиск сотрудников...</div>
+          <div
+            v-else-if="searchResults.length === 0 && hasSearched"
+            class="empty-state"
+          >
+            <h3>Сотрудники не найдены</h3>
+            <p>Попробуйте изменить параметры поиска</p>
+          </div>
+          <div v-else-if="searchResults.length > 0" class="employee-list">
+            <div
+              v-for="employee in searchResults"
+              :key="employee.id"
+              class="employee-card"
+              :class="{ fired: employee.status === 'fired' }"
+            >
+              <div class="employee-header">
+                <div class="employee-name">{{ employee.full_name }}</div>
+                <div
+                  class="employee-status"
+                  :class="`status-${employee.status}`"
+                >
+                  {{ getStatusText(employee.status) }}
+                </div>
+              </div>
+              <div class="employee-info">
+                <div class="info-item">
+                  <div class="info-label">Департамент</div>
+                  <div class="info-value">{{ employee.department_name }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Должность</div>
+                  <div class="info-value">{{ employee.position }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Пол / Возраст</div>
+                  <div class="info-value">
+                    {{ employee.gender === 'male' ? 'М' : 'Ж' }} / {{
+                    employee.age }} лет
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Образование</div>
+                  <div class="info-value">
+                    {{ getEducationText(employee.education) }}
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Паспорт</div>
+                  <div class="info-value">{{ employee.passport }}</div>
+                </div>
+              </div>
+              <div class="employee-actions">
+                <button
+                  class="btn btn-primary"
+                  @click="editEmployee(employee)"
+                  v-if="employee.status !== 'fired'"
+                  :disabled="loading"
+                >
+                  Редактировать
+                </button>
+                <button
+                  class="btn btn-success"
+                  @click="changeStatus(employee.id, 'vacation')"
+                  v-if="employee.status === 'active'"
+                  :disabled="loading"
+                >
+                  В отпуск
+                </button>
+                <button
+                  class="btn btn-success"
+                  @click="changeStatus(employee.id, 'active')"
+                  v-if="employee.status === 'vacation'"
+                  :disabled="loading"
+                >
+                  Вернуть
+                </button>
+                <button
+                  class="btn btn-danger"
+                  @click="fireEmployee(employee)"
+                  v-if="employee.status !== 'fired'"
+                  :disabled="loading"
+                >
+                  Уволить
+                </button>
+              </div>
+            </div>
+          </div>
+          <div v-else class="empty-state">
+            <h3>Введите параметры поиска</h3>
+            <p>Заполните один или несколько фильтров и нажмите "Поиск"</p>
+          </div>
+        </div>
+
+        <!-- Модальное окно редактирования -->
+        <div v-if="showEditModal" class="modal-overlay" @click="closeEditModal">
+          <div class="modal" @click.stop>
+            <h3>Редактирование сотрудника</h3>
+            <form @submit.prevent="saveEmployee">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>ФИО *</label>
+                  <input
+                    type="text"
+                    v-model="editingEmployee.full_name"
+                    required
+                    :disabled="loading"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Пол *</label>
+                  <select
+                    v-model="editingEmployee.gender"
+                    required
+                    :disabled="loading"
+                  >
+                    <option value="male">Мужской</option>
+                    <option value="female">Женский</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Возраст *</label>
+                  <input
+                    type="number"
+                    v-model.number="editingEmployee.age"
+                    required
+                    min="18"
+                    max="70"
+                    :disabled="loading"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Образование *</label>
+                  <select
+                    v-model="editingEmployee.education"
+                    required
+                    :disabled="loading"
+                  >
+                    <option value="secondary">Среднее</option>
+                    <option value="specialized">Средне-специальное</option>
+                    <option value="higher">Высшее</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Должность *</label>
+                <select
+                  v-model="editingEmployee.position"
+                  required
+                  :disabled="loading"
+                >
+                  <option
+                    v-for="position in positions"
+                    :key="position"
+                    :value="position"
+                  >
+                    {{ position }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Паспортные данные *</label>
+                <input
+                  type="text"
+                  v-model="editingEmployee.passport"
+                  required
+                  pattern="\d{4} \d{6}"
+                  title="Формат: 1234 567890"
+                  :disabled="loading"
+                />
+              </div>
+
+              <div style="display: flex; gap: 15px; margin-top: 25px">
+                <button
+                  type="submit"
+                  class="btn btn-success"
+                  :disabled="loading"
+                >
+                  {{ loading ? 'Сохранение...' : 'Сохранить' }}
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  @click="closeEditModal"
+                  :disabled="loading"
+                >
+                  Отмена
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const { createApp, ref, computed, onMounted } = Vue;
+
+      createApp({
+        setup() {
+          // Состояние приложения
+          const activeTab = ref("list");
+          const selectedDepartmentId = ref("");
+          const showEditModal = ref(false);
+          const editingEmployee = ref(null);
+          const loading = ref(false);
+          const error = ref("");
+          const success = ref("");
+          const hasSearched = ref(false);
+
+          // Данные
+          const departments = ref([]);
+          const positions = ref([]);
+          const employees = ref([]);
+          const searchResults = ref([]);
+
+          // Формы
+          const newEmployee = ref({
+            full_name: "",
+            gender: "",
+            age: "",
+            education: "",
+            position: "",
+            passport: "",
+            department_id: "",
+          });
+
+          const searchFilters = ref({
+            full_name: "",
+            position: "",
+            gender: "",
+            education: "",
+            age_from: "",
+            age_to: "",
+          });
+
+          // API функции
+          const api = {
+            async request(url, options = {}) {
+              try {
+                const response = await fetch(`/api${url}`, {
+                  headers: {
+                    "Content-Type": "application/json",
+                    ...options.headers,
+                  },
+                  ...options,
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                  throw new Error(data.error || "Ошибка сервера");
+                }
+
+                return data;
+              } catch (err) {
+                throw new Error(err.message || "Ошибка сети");
+              }
+            },
+
+            async get(url) {
+              return this.request(url);
+            },
+
+            async post(url, data) {
+              return this.request(url, {
+                method: "POST",
+                body: JSON.stringify(data),
+              });
+            },
+
+            async put(url, data) {
+              return this.request(url, {
+                method: "PUT",
+                body: JSON.stringify(data),
+              });
+            },
+
+            async patch(url, data) {
+              return this.request(url, {
+                method: "PATCH",
+                body: JSON.stringify(data),
+              });
+            },
+          };
+
+          // Вычисляемые свойства
+          const selectedDepartment = computed(() => {
+            return departments.value.find(
+              (d) => d.id === selectedDepartmentId.value
+            );
+          });
+
+          // Методы для работы с сообщениями
+          const showError = (message) => {
+            error.value = message;
+            success.value = "";
+            setTimeout(() => {
+              error.value = "";
+            }, 5000);
+          };
+
+          const showSuccess = (message) => {
+            success.value = message;
+            error.value = "";
+            setTimeout(() => {
+              success.value = "";
+            }, 3000);
+          };
+
+          // Методы загрузки данных
+          const loadDepartments = async () => {
+            try {
+              const result = await api.get("/departments");
+              departments.value = result.data;
+            } catch (err) {
+              showError("Ошибка загрузки департаментов: " + err.message);
+            }
+          };
+
+          const loadPositions = async () => {
+            try {
+              const result = await api.get("/positions");
+              positions.value = result.data;
+            } catch (err) {
+              showError("Ошибка загрузки должностей: " + err.message);
+            }
+          };
+
+          const loadEmployees = async () => {
+            if (!selectedDepartmentId.value) {
+              employees.value = [];
+              return;
+            }
+
+            loading.value = true;
+            try {
+              const result = await api.get(
+                `/employees/department/${selectedDepartmentId.value}`
+              );
+              employees.value = result.data;
+            } catch (err) {
+              showError("Ошибка загрузки сотрудников: " + err.message);
+              employees.value = [];
+            } finally {
+              loading.value = false;
+            }
+          };
+
+          // Методы для работы с сотрудниками
+          const createEmployee = async () => {
+            loading.value = true;
+            try {
+              newEmployee.value.department_id = selectedDepartmentId.value;
+
+              const result = await api.post("/employees", newEmployee.value);
+
+              if (result.success) {
+                // Очистка формы
+                newEmployee.value = {
+                  full_name: "",
+                  gender: "",
+                  age: "",
+                  education: "",
+                  position: "",
+                  passport: "",
+                  department_id: "",
+                };
+
+                showSuccess(result.message || "Сотрудник успешно создан!");
+                await loadEmployees();
+                activeTab.value = "list";
+              }
+            } catch (err) {
+              showError("Ошибка создания сотрудника: " + err.message);
+            } finally {
+              loading.value = false;
+            }
+          };
+
+          const editEmployee = (employee) => {
+            editingEmployee.value = { ...employee };
+            showEditModal.value = true;
+          };
+
+          const saveEmployee = async () => {
+            loading.value = true;
+            try {
+              const result = await api.put(
+                `/employees/${editingEmployee.value.id}`,
+                editingEmployee.value
+              );
+
+              if (result.success) {
+                closeEditModal();
+                showSuccess(result.message || "Данные сотрудника обновлены!");
+                await loadEmployees();
+                if (activeTab.value === "search" && hasSearched.value) {
+                  await searchEmployees();
+                }
+              }
+            } catch (err) {
+              showError("Ошибка обновления сотрудника: " + err.message);
+            } finally {
+              loading.value = false;
+            }
+          };
+
+          const closeEditModal = () => {
+            showEditModal.value = false;
+            editingEmployee.value = null;
+          };
+
+          const changeStatus = async (employeeId, newStatus) => {
+            const statusTexts = {
+              vacation: "отправить в отпуск",
+              active: "вернуть из отпуска",
+              fired: "уволить",
+            };
+
+            if (confirm(`Подтвердите действие: ${statusTexts[newStatus]}?`)) {
+              loading.value = true;
+              try {
+                const result = await api.patch(
+                  `/employees/${employeeId}/status`,
+                  { status: newStatus }
+                );
+
+                if (result.success) {
+                  const statusMessages = {
+                    vacation: "Сотрудник отправлен в отпуск",
+                    active: "Сотрудник вернулся из отпуска",
+                    fired: "Сотрудник уволен",
+                  };
+
+                  showSuccess(result.message || statusMessages[newStatus]);
+                  await loadEmployees();
+                  if (activeTab.value === "search" && hasSearched.value) {
+                    await searchEmployees();
+                  }
+                }
+              } catch (err) {
+                showError("Ошибка изменения статуса: " + err.message);
+              } finally {
+                loading.value = false;
+              }
+            }
+          };
+
+          const searchEmployees = async () => {
+            loading.value = true;
+            hasSearched.value = true;
+            try {
+              const result = await api.post(
+                "/employees/search",
+                searchFilters.value
+              );
+              searchResults.value = result.data;
+            } catch (err) {
+              showError("Ошибка поиска сотрудников: " + err.message);
+              searchResults.value = [];
+            } finally {
+              loading.value = false;
+            }
+          };
+
+          const clearFilters = () => {
+            searchFilters.value = {
+              full_name: "",
+              position: "",
+              gender: "",
+              education: "",
+              age_from: "",
+              age_to: "",
+            };
+            searchResults.value = [];
+            hasSearched.value = false;
+          };
+
+          // Вспомогательные методы
+          const setActiveTab = (tab) => {
+            activeTab.value = tab;
+            error.value = "";
+            success.value = "";
+          };
+
+          const getStatusText = (status) => {
+            const statusMap = {
+              active: "Активен",
+              vacation: "В отпуске",
+              fired: "Уволен",
+            };
+            return statusMap[status] || status;
+          };
+
+          const getEducationText = (education) => {
+            const educationMap = {
+              secondary: "Среднее",
+              specialized: "Средне-специальное",
+              higher: "Высшее",
+            };
+            return educationMap[education] || education;
+          };
+
+          const getDepartmentName = (departmentId) => {
+            const dept = departments.value.find((d) => d.id === departmentId);
+            return dept ? dept.name : "Неизвестный департамент";
+          };
+
+          // Инициализация
+          onMounted(async () => {
+            await loadDepartments();
+            await loadPositions();
+          });
+
+          return {
+            // Состояние
+            activeTab,
+            selectedDepartmentId,
+            showEditModal,
+            editingEmployee,
+            loading,
+            error,
+            success,
+            hasSearched,
+
+            // Данные
+            departments,
+            positions,
+            employees,
+            searchResults,
+            newEmployee,
+            searchFilters,
+
+            // Вычисляемые свойства
+            selectedDepartment,
+
+            // Методы
+            setActiveTab,
+            loadEmployees,
+            createEmployee,
+            editEmployee,
+            saveEmployee,
+            closeEditModal,
+            changeStatus,
+            searchEmployees,
+            clearFilters,
+            getStatusText,
+            getEducationText,
+            getDepartmentName,
+          };
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>

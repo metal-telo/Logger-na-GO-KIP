@@ -3,8 +3,10 @@ package handler
 import (
 	"embed"
 	"fmt"
+	"io/fs"
 	"log/slog"
 	"net/http"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -24,14 +26,16 @@ type Handler struct {
 	service     *service.EmployeeService
 	tracer      trace.Tracer
 	staticFiles embed.FS
+	frontendDir string // Добавляем путь к фронтенду
 }
 
 // NewHandler creates a new HTTP handler
-func NewHandler(svc *service.EmployeeService, staticFiles embed.FS) *Handler {
+func NewHandler(svc *service.EmployeeService, staticFiles embed.FS, frontendDir string) *Handler {
 	return &Handler{
 		service:     svc,
 		tracer:      otel.Tracer("employee-handler"),
 		staticFiles: staticFiles,
+		frontendDir: frontendDir,
 	}
 }
 
@@ -42,6 +46,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	router.Use(h.tracingMiddleware())
 	router.Use(gin.Recovery())
 
+	// API маршруты
 	api := router.Group("/api")
 	{
 		api.GET("/departments", h.getDepartments)
@@ -55,17 +60,32 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		api.GET("/health", h.healthCheck)
 	}
 
+	// Метрики Prometheus
 	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
-	router.StaticFS("/static", http.FS(h.staticFiles))
 
-	router.GET("/", func(c *gin.Context) {
-		data, err := h.staticFiles.ReadFile("static/index.html")
-		if err != nil {
-			c.String(http.StatusInternalServerError, "Ошибка загрузки страницы")
-			return
-		}
-		c.Data(http.StatusOK, "text/html; charset=utf-8", data)
-	})
+	// Статические файлы Vue фронтенда
+	if h.frontendDir != "" {
+		router.Static("/", h.frontendDir)
+		router.NoRoute(func(c *gin.Context) {
+			if filepath.Ext(c.Request.URL.Path) == "" {
+				c.File(filepath.Join(h.frontendDir, "index.html"))
+			} else {
+				c.Next()
+			}
+		})
+	} else {
+		// Для продакшена - используем embed
+		router.StaticFS("/static", http.FS(h.staticFiles))
+		
+		router.GET("/", func(c *gin.Context) {
+			data, err := h.staticFiles.ReadFile("static/index.html")
+			if err != nil {
+				c.String(http.StatusInternalServerError, "Ошибка загрузки страницы")
+				return
+			}
+			c.Data(http.StatusOK, "text/html; charset=utf-8", data)
+		})
+	}
 
 	return router
 }
