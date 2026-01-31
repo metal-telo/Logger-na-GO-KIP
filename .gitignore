@@ -1,0 +1,73 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+server
+server.exe
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+
+# Dependency directories
+vendor/
+
+# Go workspace file
+go.work
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/*.log
+logs/
+!logs/.gitkeep
+
+# Metrics
+metrics/*.log
+metrics/
+!metrics/.gitkeep
+
+# Test results
+plow-results/*.log
+plow-results/
+!plow-results/.gitkeep
+
+# Temporary files
+*.tmp
+*.temp
+
+# Empty directories (will be created at runtime)
+static/
+
+# Environment variables
+.env
+.env.local
+
+# Build artifacts
+dist/
+build/
+bin/
+
+# Docker
+.docker/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
