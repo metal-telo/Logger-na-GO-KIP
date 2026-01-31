@@ -19,7 +19,7 @@ services:
       - LOG_DIR=/app/logs
       - METRICS_DIR=/app/metrics
     volumes:
-      # Монтируем директории для логов и метрик (чтобы видеть их на хосте)
+     
       - ./logs:/app/logs
       - ./metrics:/app/metrics
     depends_on:
@@ -34,7 +34,7 @@ services:
       retries: 3
       start_period: 10s
 
-  # Jaeger для трассировки (опционально)
+  # Jaeger для трассировки 
   jaeger:
     image: jaegertracing/all-in-one:latest
     container_name: jaeger
