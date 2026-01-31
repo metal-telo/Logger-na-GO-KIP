@@ -27,20 +27,17 @@ server.exe
 .DS_Store
 Thumbs.db
 
-# Тестовые файлы
+
 *_test.go
 test_*.bat
 test_*.sh
 
-# Скрипты (не нужны в контейнере)
+
 *.bat
 *.sh
 scripts/
 
-# Документация (опционально, можно оставить)
-# README.md
 
-# Docker файлы
 Dockerfile
 .dockerignore
 docker-compose.yml
