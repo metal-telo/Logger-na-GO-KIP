@@ -1,3 +1,69 @@
+Инструкция по развертыванию в Docker Desktop
+
+## Предварительные требования
+
+1. **Docker Desktop** установлен и запущен
+   - Скачать: https://www.docker.com/products/docker-desktop
+2. **Git** (для клонирования репозитория)
+
+## Шаг 1: Клонирование репозитория
+
+```bash
+git clone https://github.com/metal-telo/Logger-na-GO-KIP.git
+cd Logger-na-GO-KIP
+git checkout dev/change_structure
+```
+
+## Шаг 2: Проверка Docker
+
+```bash
+# Проверить, что Docker работает
+docker --version
+docker-compose --version
+
+# Проверить, что Docker Desktop запущен
+docker ps
+```
+
+## Шаг 3: Сборка и запуск приложения
+
+###  Через Docker Compose
+
+```bash
+# Собрать образы и запустить контейнеры
+docker-compose up -d --build
+
+# Просмотр логов приложения
+docker-compose logs -f app
+
+# Просмотр логов Jaeger
+docker-compose logs -f jaeger
+```
+Проверка работоспособности
+
+### Проверка через браузер
+
+1. **Приложение**: http://localhost:8080
+2. **Health Check**: http://localhost:8080/api/health
+3. **Jaeger UI**: http://localhost:16686
+4. **Prometheus метрики**: http://localhost:8080/metrics
+
+### Проверка через командную строку
+
+```bash
+# Проверить статус контейнеров
+docker ps
+
+# Проверить health check
+docker inspect employee-management-app | findstr Health
+
+# Проверить логи
+docker logs employee-management-app
+
+# Выполнить тестовый запрос
+curl http://localhost:8080/api/health
+
+
 # Employee Management System
 
 REST API для управления сотрудниками на Go с веб-интерфейсом, построенный по стандарту [golang-standards/project-layout](https://github.com/golang-standards/project-layout).
